@@ -1,0 +1,38 @@
+[B01] Rename im selben Ordner: File-ID und Storage-Referenz
+    → PASS
+[B02] Move in anderen Ordner (inkl. Ordner-Move mit Kindern)
+    → PASS
+[B03] Move durch WebDAV-Client (Umbenennen, Verschieben)
+    → PASS
+[B04] Copy (Node::copy und WebDAV COPY)
+    → PASS
+[B05] Trash und Restore: File-ID, Pfad, Storage-Referenzen
+    → PASS
+[B06] Inhaltsänderung (gleiche Größe): File-ID, ETag, MTime
+    → FAIL
+[B07] Move über Storage-Grenzen (Heim-Storage → Freigabe-Storage eines anderen Benutzers)
+    → FAIL
+[D01] Node::delete() verwendet den Nextcloud-Papierkorb; Identität, Erreichbarkeit und Inhalt des gelöschten Knotens
+    → PASS
+[D02] Nachweis einer Papierkorboperation (Pre-Delete-Hash beider Exemplare, Post-Beobachtung)
+    → PASS
+[D03] Zwei Löschungen gleichnamiger Dateien am selben Pfad kurz nacheinander (gleiche Sekunde) und mit 2 s Abstand
+    → FAIL
+[D04] Restore bei inzwischen vorhandener Zieldatei
+    → PASS
+[D05] Löschen per WebDAV DELETE und Löschen eines Ordners
+    → PASS
+[D06] Fähigkeitserkennung trash_verified (nicht destruktiv)
+    → PASS
+[E01] App-interne Dateioperationen über die Node-API (CLI-Prozess): Create, Write, Rename, Move, Copy, Delete
+    → PASS
+[E02] WebDAV-Operationen eines Clients (Apache-Prozess): PUT neu/überschreiben, MOVE (Rename/Move), COPY, DELETE
+    → PASS
+[E03] Chunked Upload v2 (Nextcloud-/Mobil-/Desktop-Clients): wann und wie oft Ereignisse für die Zieldatei
+    → PASS
+[E04] Papierkorb: Delete und Restore (Node-API und WebDAV-Restore)
+    → PASS
+[E05] Identitätsmerkmale der Ereignisse (Pfad, File-ID, Quelle/Ziel) über alle Szenarien
+    → FAIL
+[E06] Ordner-Move: Ereignisse für den Ordner und für enthaltene Dateien (group_follow-Erkennung)
+    → PASS

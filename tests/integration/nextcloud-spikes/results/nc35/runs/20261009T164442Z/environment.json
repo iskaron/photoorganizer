@@ -1,0 +1,54 @@
+{
+    "nextcloud": {
+        "version": "35.0.0",
+        "build": [
+            35,
+            0,
+            0,
+            10
+        ],
+        "channel": "stable",
+        "major": 35
+    },
+    "php": {
+        "version": "8.5.10",
+        "sapi": "cli",
+        "extensions_relevant": [
+            "hash",
+            "redis",
+            "apcu",
+            "pcntl",
+            "posix",
+            "curl",
+            "imagick",
+            "exif"
+        ],
+        "memory_limit": "1G"
+    },
+    "database": {
+        "provider": "mysql",
+        "server_version": "11.4.13-MariaDB-ubu2404-log"
+    },
+    "storage_class_home": "OC\\Files\\Storage\\Home",
+    "storage_wrapper_chain_home": [
+        "OCA\\Files_Trashbin\\Storage",
+        "OCA\\FilesLock\\Storage\\LockWrapper",
+        "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+        "OC\\Files\\Storage\\Wrapper\\Quota",
+        "OC\\Files\\Storage\\Home"
+    ],
+    "mount_point_class_home": "OC\\Files\\Mount\\HomeMountPoint",
+    "storage_id_class": "home::<hidden>",
+    "datadir_filesystem": "ext2/ext3",
+    "locking": {
+        "filelocking_enabled": true,
+        "provider_class": "OC\\Lock\\MemcacheLockingProvider",
+        "memcache_locking": "\\OC\\Memcache\\Redis",
+        "filelocking_ttl": null
+    },
+    "trashbin_enabled": true,
+    "versions_enabled": true,
+    "encryption_enabled": false,
+    "trashbin_retention_obligation": "auto (Default)",
+    "probe_app_version": "0.0.1"
+}

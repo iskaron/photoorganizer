@@ -1,0 +1,4 @@
+[A01] Einfacher Move/Rename auf demselben Storage
+    → PASS
+[F01] SHA-256-Kontext: Serialisieren und Fortsetzen an vielen Offsets (reines PHP)
+    → PASS

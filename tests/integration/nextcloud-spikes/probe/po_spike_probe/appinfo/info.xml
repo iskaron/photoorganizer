@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>po_spike_probe</id>
+    <name>PO Spike Probe</name>
+    <summary>Wegwerfbare Test-Probe für Nextcloud-API-Spikes (nicht Teil des Photo Organizers)</summary>
+    <description>Wegwerfbarer Testcode zur experimentellen Prüfung öffentlicher Nextcloud-APIs (Move, File-IDs, Locking, Papierkorb, Events, HashContext). Gehört nicht zur späteren Photo-Organizer-App und darf niemals produktiv installiert werden.</description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author>photoorganizier-spikes</author>
+    <namespace>PoSpikeProbe</namespace>
+    <category>tools</category>
+    <dependencies>
+        <php min-version="8.1"/>
+        <nextcloud min-version="34" max-version="35"/>
+    </dependencies>
+    <commands>
+        <command>OCA\PoSpikeProbe\Command\Env</command>
+        <command>OCA\PoSpikeProbe\Command\Run</command>
+        <command>OCA\PoSpikeProbe\Command\Child</command>
+        <command>OCA\PoSpikeProbe\Command\Cleanup</command>
+        <command>OCA\PoSpikeProbe\Command\HashResume</command>
+        <command>OCA\PoSpikeProbe\Command\Fingerprint</command>
+    </commands>
+</info>

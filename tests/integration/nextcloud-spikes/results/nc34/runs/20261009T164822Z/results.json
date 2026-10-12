@@ -1,0 +1,210 @@
+{
+    "run_id": "20261009T164822Z",
+    "environment": {
+        "nextcloud": {
+            "version": "34.0.4",
+            "build": [
+                34,
+                0,
+                4,
+                1
+            ],
+            "channel": "stable",
+            "major": 34
+        },
+        "php": {
+            "version": "8.5.11",
+            "sapi": "cli",
+            "extensions_relevant": [
+                "hash",
+                "redis",
+                "apcu",
+                "pcntl",
+                "posix",
+                "curl",
+                "imagick",
+                "exif"
+            ],
+            "memory_limit": "1G"
+        },
+        "database": {
+            "provider": "mysql",
+            "server_version": "11.4.13-MariaDB-ubu2404-log"
+        },
+        "storage_class_home": "OC\\Files\\Storage\\Home",
+        "storage_wrapper_chain_home": [
+            "OCA\\Files_Trashbin\\Storage",
+            "OCA\\FilesLock\\Storage\\LockWrapper",
+            "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+            "OC\\Files\\Storage\\Wrapper\\Quota",
+            "OC\\Files\\Storage\\Home"
+        ],
+        "mount_point_class_home": "OC\\Files\\Mount\\HomeMountPoint",
+        "storage_id_class": "home::<hidden>",
+        "datadir_filesystem": "ext2/ext3",
+        "locking": {
+            "filelocking_enabled": true,
+            "provider_class": "OC\\Lock\\MemcacheLockingProvider",
+            "memcache_locking": "\\OC\\Memcache\\Redis",
+            "filelocking_ttl": null
+        },
+        "trashbin_enabled": true,
+        "versions_enabled": true,
+        "encryption_enabled": false,
+        "trashbin_retention_obligation": "auto (Default)",
+        "probe_app_version": "0.0.1"
+    },
+    "results": [
+        {
+            "case_id": "A01",
+            "spike": "SP-A",
+            "title": "Einfacher Move/Rename auf demselben Storage",
+            "hypothesis": "Move ohne vorhandenes Ziel verschiebt den Knoten unverändert (Inhalt, Anzahl) und liefert den Zielknoten.",
+            "doc_ref": "job-processing.md §6.3, DEC-ARC-010, OQ-069",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "34.0.4",
+                "php_version": "8.5.11",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "result": "a/photo.jpg → b/photo.jpg; Inhalt gleich; Quelle weg; Dateianzahl 1"
+            },
+            "observed": {
+                "storage": {
+                    "class": "OCA\\Files_Trashbin\\Storage",
+                    "storage_numeric_id": 3,
+                    "mount_point": "/alice/",
+                    "internal_path": "files/spike/20261009T164822Z/A01/b/photo.jpg"
+                }
+            },
+            "sha256_before": {
+                "a/photo.jpg": "f2ddf02858ecc420521fb2a37928481ddaeea2d7257978b0a3bd10ae2bf7bb9e"
+            },
+            "sha256_after": {
+                "b/photo.jpg": "f2ddf02858ecc420521fb2a37928481ddaeea2d7257978b0a3bd10ae2bf7bb9e"
+            },
+            "file_ids_before": {
+                "a/photo.jpg": 11501
+            },
+            "file_ids_after": {
+                "b/photo.jpg": 11501
+            },
+            "file_count_before": 3,
+            "file_count_after": 3,
+            "api": [
+                {
+                    "label": "Node::move(b/photo.jpg)",
+                    "ok": true,
+                    "ret": {
+                        "_node": "OC\\Files\\Node\\File",
+                        "path": "/alice/files/spike/20261009T164822Z/A01/b/photo.jpg",
+                        "id": 11501
+                    },
+                    "exc": null,
+                    "ms": 184.43
+                }
+            ],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Move ohne Ausnahme",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Ziel vorhanden, Quelle weg",
+                    "detail": [
+                        "a",
+                        "b",
+                        "b/photo.jpg"
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "SHA-256 unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "genau eine Datei",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 713,
+            "run_id": "20261009T164822Z"
+        },
+        {
+            "case_id": "F01",
+            "spike": "SP-H",
+            "title": "SHA-256-Kontext: Serialisieren und Fortsetzen an vielen Offsets (reines PHP)",
+            "hypothesis": "Ein per serialize() gesicherter SHA-256-HashContext lässt sich fortsetzen und liefert exakt den Digest des Gesamtinhalts.",
+            "doc_ref": "job-processing.md §3.6 (H1–H3), SP-H, hash_resume, DEC-IMM-008",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "34.0.4",
+                "php_version": "8.5.11",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "php_version": "8.5.11",
+                "offsets_tested": 16,
+                "serialized_state_bytes": 313,
+                "state_sample_base64": "TzoxMToiSGFzaENvbnRleHQiOjU6e2k6MDtzOjY6InNoYTI1NiI7aToxO2k6MDtpOjI7YToxMTp7aTowO2k6LTUwNDU2NDQ0NztpOjE7aTotOTAzNzM1Njc0O2k6MjtpOi05Mjk1MDY4MTk7aTozO2k6MzIxMDY0MTI5O2k6NDtpOi0xMTc5MTczMTYxO2k6NTtpOjE3OTAxODI2NDtpOjY7aTotMTcxMDA1NzA2ODtpOjc7aTotMTI4NTA1NzE2NTtpOjg7aTo4MDA7aTo5O2k6MDtpOjEwO3M6NjQ6IvI1Qg48RdSl4pe3QUbJ+J2UtDxtPrKcDNcnoVES6YGnafum6zf+pAwZIekSW/byYI4dt5wowtQB/4wBGyzKNJgiO31pOjM7aToyO2k6NDthOjA6e319"
+            },
+            "sha256_before": null,
+            "sha256_after": null,
+            "file_ids_before": null,
+            "file_ids_after": null,
+            "file_count_before": null,
+            "file_count_after": null,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "alle Offsets liefern den korrekten Digest",
+                    "detail": []
+                }
+            ],
+            "notes": [
+                "Gilt für SHA-256 unter dieser PHP-Version; keine Aussage über andere Algorithmen (xxh3 ist hier nicht Gegenstand)."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 130,
+            "run_id": "20261009T164822Z"
+        }
+    ]
+}

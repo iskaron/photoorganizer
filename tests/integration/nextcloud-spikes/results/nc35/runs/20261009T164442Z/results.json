@@ -1,0 +1,2434 @@
+{
+    "run_id": "20261009T164442Z",
+    "environment": {
+        "nextcloud": {
+            "version": "35.0.0",
+            "build": [
+                35,
+                0,
+                0,
+                10
+            ],
+            "channel": "stable",
+            "major": 35
+        },
+        "php": {
+            "version": "8.5.10",
+            "sapi": "cli",
+            "extensions_relevant": [
+                "hash",
+                "redis",
+                "apcu",
+                "pcntl",
+                "posix",
+                "curl",
+                "imagick",
+                "exif"
+            ],
+            "memory_limit": "1G"
+        },
+        "database": {
+            "provider": "mysql",
+            "server_version": "11.4.13-MariaDB-ubu2404-log"
+        },
+        "storage_class_home": "OC\\Files\\Storage\\Home",
+        "storage_wrapper_chain_home": [
+            "OCA\\Files_Trashbin\\Storage",
+            "OCA\\FilesLock\\Storage\\LockWrapper",
+            "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+            "OC\\Files\\Storage\\Wrapper\\Quota",
+            "OC\\Files\\Storage\\Home"
+        ],
+        "mount_point_class_home": "OC\\Files\\Mount\\HomeMountPoint",
+        "storage_id_class": "home::<hidden>",
+        "datadir_filesystem": "ext2/ext3",
+        "locking": {
+            "filelocking_enabled": true,
+            "provider_class": "OC\\Lock\\MemcacheLockingProvider",
+            "memcache_locking": "\\OC\\Memcache\\Redis",
+            "filelocking_ttl": null
+        },
+        "trashbin_enabled": true,
+        "versions_enabled": true,
+        "encryption_enabled": false,
+        "trashbin_retention_obligation": "auto (Default)",
+        "probe_app_version": "0.0.1"
+    },
+    "results": [
+        {
+            "case_id": "B01",
+            "spike": "SP-B",
+            "title": "Rename im selben Ordner: File-ID und Storage-Referenz",
+            "hypothesis": "Rename (Node::move im selben Ordner) erhält die File-ID; Storage und Mount bleiben gleich; nur Pfad/internal_path/ETag ändern sich.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "before": {
+                    "id": 95,
+                    "path": "/alice/files/spike/20261009T164442Z/B01/a.jpg",
+                    "etag": "f91b71f27e369904ad6d7d1bd24ccc2d",
+                    "mtime": 1791564284,
+                    "size": 3000,
+                    "class": "OCA\\Files_Trashbin\\Storage",
+                    "storage_numeric_id": 3,
+                    "mount_point": "/alice/",
+                    "internal_path": "files/spike/20261009T164442Z/B01/a.jpg",
+                    "parent_id": 94
+                },
+                "after": {
+                    "id": 95,
+                    "path": "/alice/files/spike/20261009T164442Z/B01/b.jpg",
+                    "etag": "f91b71f27e369904ad6d7d1bd24ccc2d",
+                    "mtime": 1791564284,
+                    "size": 3000,
+                    "class": "OCA\\Files_Trashbin\\Storage",
+                    "storage_numeric_id": 3,
+                    "mount_point": "/alice/",
+                    "internal_path": "files/spike/20261009T164442Z/B01/b.jpg",
+                    "parent_id": 94
+                },
+                "etag_changed": false,
+                "mtime_changed": false
+            },
+            "sha256_before": {
+                "a.jpg": "af215dc0ed82a29d241b1f5ed10a97cff9533286e933e38cf4a618606718fb65"
+            },
+            "sha256_after": {
+                "b.jpg": "af215dc0ed82a29d241b1f5ed10a97cff9533286e933e38cf4a618606718fb65"
+            },
+            "file_ids_before": {
+                "a.jpg": 95
+            },
+            "file_ids_after": {
+                "b.jpg": 95
+            },
+            "file_count_before": 1,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "File-ID unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Storage unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "internal_path ändert sich",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt unverändert",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 519,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B02",
+            "spike": "SP-B",
+            "title": "Move in anderen Ordner (inkl. Ordner-Move mit Kindern)",
+            "hypothesis": "Move in einen anderen Ordner desselben Storage erhält die File-ID; ein Ordner-Move erhält auch die IDs aller Kinder.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": [],
+            "sha256_before": {
+                "a/sub/y.jpg": "da7630c9f9c83c5b10bfd646364d35511936dbba78fdd23ce7b10ead2456d093",
+                "a/sub/z.jpg": "8d121d5f75b06a387b0adfa275017cb25c2b28b467dec8acc9ca23084d9a3c07",
+                "a/x.jpg": "83281d7da7aacad4d406c1b3e2d3cd38567e66fe76075a18b6f26d9231b52cd2"
+            },
+            "sha256_after": {
+                "b/sub/y.jpg": "da7630c9f9c83c5b10bfd646364d35511936dbba78fdd23ce7b10ead2456d093",
+                "b/sub/z.jpg": "8d121d5f75b06a387b0adfa275017cb25c2b28b467dec8acc9ca23084d9a3c07",
+                "b/x.jpg": "83281d7da7aacad4d406c1b3e2d3cd38567e66fe76075a18b6f26d9231b52cd2"
+            },
+            "file_ids_before": {
+                "a/sub/y.jpg": 101,
+                "a/sub/z.jpg": 102,
+                "a/x.jpg": 99
+            },
+            "file_ids_after": {
+                "b/sub/y.jpg": 101,
+                "b/sub/z.jpg": 102,
+                "b/x.jpg": 99
+            },
+            "file_count_before": 6,
+            "file_count_after": 6,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "ID von a/x.jpg bleibt unter b/x.jpg erhalten",
+                    "detail": [
+                        99,
+                        99
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "ID von a/sub bleibt unter b/sub erhalten",
+                    "detail": [
+                        100,
+                        100
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "ID von a/sub/y.jpg bleibt unter b/sub/y.jpg erhalten",
+                    "detail": [
+                        101,
+                        101
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "ID von a/sub/z.jpg bleibt unter b/sub/z.jpg erhalten",
+                    "detail": [
+                        102,
+                        102
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Anzahl der Einträge gleich",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1035,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B03",
+            "spike": "SP-B",
+            "title": "Move durch WebDAV-Client (Umbenennen, Verschieben)",
+            "hypothesis": "WebDAV MOVE erhält die File-ID wie Node::move (Client-Sync-Verhalten).",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "dav": [
+                    {
+                        "method": "MOVE",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": "\"35ce1a8ff6d8e0bd1240a2943ef4a182\"",
+                        "oc_fileid": "00000105ocvpw36zi0xw",
+                        "ms": 1080.3,
+                        "body_head": null
+                    },
+                    {
+                        "method": "MOVE",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": "\"35ce1a8ff6d8e0bd1240a2943ef4a182\"",
+                        "oc_fileid": "00000105ocvpw36zi0xw",
+                        "ms": 307.3,
+                        "body_head": null
+                    }
+                ],
+                "oc_fileid_header_prefix_matches": true
+            },
+            "sha256_before": {
+                "a.jpg": "d772bf222b3bbd19da371a599619fa02c3361dd4e87a74ab9a45407bf071b6b3"
+            },
+            "sha256_after": {
+                "dst/c.jpg": "d772bf222b3bbd19da371a599619fa02c3361dd4e87a74ab9a45407bf071b6b3"
+            },
+            "file_ids_before": {
+                "a.jpg": 105
+            },
+            "file_ids_after": {
+                "dst/c.jpg": 105
+            },
+            "file_count_before": 2,
+            "file_count_after": 2,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "File-ID nach zwei WebDAV-Moves erhalten",
+                    "detail": [
+                        105,
+                        105
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt unverändert",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1642,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B04",
+            "spike": "SP-B",
+            "title": "Copy (Node::copy und WebDAV COPY)",
+            "hypothesis": "Copy erzeugt eine neue File-ID; die Quelle bleibt unverändert.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "dav_copy": {
+                    "method": "COPY",
+                    "status": 201,
+                    "curl_error": null,
+                    "etag": null,
+                    "oc_fileid": "00000110ocvpw36zi0xw",
+                    "ms": 277.3,
+                    "body_head": null
+                }
+            },
+            "sha256_before": {
+                "a.jpg": "7e11c562c0c2bb9d34c74eeca5142ddeaa1135f2e9aa187e44744c7eb8f5cd31"
+            },
+            "sha256_after": {
+                "a.jpg": "7e11c562c0c2bb9d34c74eeca5142ddeaa1135f2e9aa187e44744c7eb8f5cd31",
+                "copy_dav.jpg": "7e11c562c0c2bb9d34c74eeca5142ddeaa1135f2e9aa187e44744c7eb8f5cd31",
+                "copy_node.jpg": "7e11c562c0c2bb9d34c74eeca5142ddeaa1135f2e9aa187e44744c7eb8f5cd31"
+            },
+            "file_ids_before": {
+                "a.jpg": 108
+            },
+            "file_ids_after": {
+                "a.jpg": 108,
+                "copy_dav.jpg": 110,
+                "copy_node.jpg": 109
+            },
+            "file_count_before": 1,
+            "file_count_after": 3,
+            "api": [
+                {
+                    "label": "Node::copy",
+                    "ok": true,
+                    "ret": {
+                        "_node": "OC\\Files\\Node\\File",
+                        "path": "/alice/files/spike/20261009T164442Z/B04/copy_node.jpg",
+                        "id": 109
+                    },
+                    "exc": null,
+                    "ms": 142.5
+                }
+            ],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Quell-ID unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Kopie (Node) hat neue ID",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Kopie (WebDAV) hat neue ID",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Kopie-Inhalt gleich",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 613,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B05",
+            "spike": "SP-B/SP-J",
+            "title": "Trash und Restore: File-ID, Pfad, Storage-Referenzen",
+            "hypothesis": "Beim Löschen in den Papierkorb bleibt die File-ID erhalten (Papierkorbeintrag trägt dieselbe ID); die Wiederherstellung stellt Pfad und ID wieder her.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "getById_after_delete": [
+                    "/alice/files_trashbin/files/gone.jpg.d1791564288"
+                ],
+                "trash_entry": [
+                    "/remote.php/dav/trashbin/alice/trash/gone.jpg.d1791564288",
+                    {
+                        "getetag": "",
+                        "fileid": "112",
+                        "size": "2200",
+                        "getcontentlength": "2200",
+                        "getlastmodified": "Fri, 09 Oct 2026 16:44:48 GMT",
+                        "permissions": "GD",
+                        "trashbin-filename": "gone.jpg",
+                        "trashbin-original-location": "/spike/20261009T164442Z/B05/gone.jpg",
+                        "trashbin-deletion-time": "1791564288"
+                    }
+                ],
+                "trash_content_get": {
+                    "status": 200,
+                    "sha256": "690b40452ac87f2a415dff17f5ba08e51644b178b07b470fa22345dd07c58271"
+                },
+                "restore_response": {
+                    "method": "MOVE",
+                    "status": 201,
+                    "curl_error": null,
+                    "etag": null,
+                    "oc_fileid": null,
+                    "ms": 162.6,
+                    "body_head": null
+                },
+                "after_restore_ref": {
+                    "id": 112,
+                    "path": "/alice/files/spike/20261009T164442Z/B05/gone.jpg",
+                    "etag": "29461786457a0566ba7de37829e51080",
+                    "mtime": 1791564288,
+                    "size": 2200,
+                    "class": "OCA\\Files_Trashbin\\Storage",
+                    "storage_numeric_id": 3,
+                    "mount_point": "/alice/",
+                    "internal_path": "files/spike/20261009T164442Z/B05/gone.jpg",
+                    "parent_id": 111
+                },
+                "before_ref": {
+                    "id": 112,
+                    "path": "/alice/files/spike/20261009T164442Z/B05/gone.jpg",
+                    "etag": "29461786457a0566ba7de37829e51080",
+                    "mtime": 1791564288,
+                    "size": 2200,
+                    "class": "OCA\\Files_Trashbin\\Storage",
+                    "storage_numeric_id": 3,
+                    "mount_point": "/alice/",
+                    "internal_path": "files/spike/20261009T164442Z/B05/gone.jpg",
+                    "parent_id": 111
+                }
+            },
+            "sha256_before": {
+                "gone.jpg": "690b40452ac87f2a415dff17f5ba08e51644b178b07b470fa22345dd07c58271"
+            },
+            "sha256_after": {
+                "gone.jpg": "690b40452ac87f2a415dff17f5ba08e51644b178b07b470fa22345dd07c58271"
+            },
+            "file_ids_before": {
+                "gone.jpg": 112
+            },
+            "file_ids_after": {
+                "gone.jpg": 112
+            },
+            "file_count_before": 1,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Papierkorbeintrag trägt dieselbe File-ID wie vorher",
+                    "detail": [
+                        112,
+                        "112"
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt im Papierkorb per WebDAV lesbar und gleich",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Datei nach Restore am Originalpfad",
+                    "detail": [
+                        "gone.jpg"
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "File-ID nach Restore unverändert",
+                    "detail": [
+                        112,
+                        112
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt nach Restore unverändert",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 684,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B06",
+            "spike": "SP-B",
+            "title": "Inhaltsänderung (gleiche Größe): File-ID, ETag, MTime",
+            "hypothesis": "Eine Inhaltsänderung erhält die File-ID und ändert ETag (auch bei gleicher Größe), sodass eine Signatur aus ETag/MTime/Größe jede Änderung erkennt.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "FAIL",
+            "evidence": "counterexample",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "same_second_change": {
+                    "mtime_before_after": [
+                        1791564289,
+                        1791564289
+                    ],
+                    "signature_before": [
+                        2000,
+                        1791564289,
+                        "13743a03b9ba8928970ae9ab46345048"
+                    ],
+                    "signature_after": [
+                        2000,
+                        1791564289,
+                        "13743a03b9ba8928970ae9ab46345048"
+                    ],
+                    "content_changed": true
+                },
+                "change_after_2s": {
+                    "signature_after": [
+                        2000,
+                        1791564291,
+                        "93ed6137781d30fa9164e0e2be0b3aba"
+                    ]
+                }
+            },
+            "sha256_before": {
+                "a.jpg": "3cae58dfd716e4fd78687cf4bad347056cc83cc9cae04c4ee0b6a3890b983ff3"
+            },
+            "sha256_after": {
+                "a.jpg": "70a86e3b85a7bf56a8aedb53abc145256bd75c23c73199da3ca6ee62cc983854"
+            },
+            "file_ids_before": {
+                "a.jpg": 118
+            },
+            "file_ids_after": {
+                "a.jpg": 118
+            },
+            "file_count_before": 1,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "File-ID unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": false,
+                    "desc": "Signatur (Größe, MTime, ETag) ändert sich auch bei Änderung in derselben Sekunde mit gleicher Größe",
+                    "detail": [
+                        [
+                            2000,
+                            1791564289,
+                            "13743a03b9ba8928970ae9ab46345048"
+                        ],
+                        [
+                            2000,
+                            1791564289,
+                            "13743a03b9ba8928970ae9ab46345048"
+                        ]
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "nach >1 s ändert sich die Signatur",
+                    "detail": [
+                        [
+                            2000,
+                            1791564289,
+                            "13743a03b9ba8928970ae9ab46345048"
+                        ],
+                        [
+                            2000,
+                            1791564291,
+                            "93ed6137781d30fa9164e0e2be0b3aba"
+                        ]
+                    ]
+                }
+            ],
+            "notes": [
+                "Der Inhalt hat sich geändert, ETag/MTime/Größe nicht: ein Hash-Cache über diese Signatur würde die Änderung übersehen (Granularität Sekunde)."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 2527,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "B07",
+            "spike": "SP-B/SP-C",
+            "title": "Move über Storage-Grenzen (Heim-Storage → Freigabe-Storage eines anderen Benutzers)",
+            "hypothesis": "Ein Move über Storage-Grenzen erhält die File-ID nicht (Kopie + Löschen); bestätigt die Beschränkung auf den Heim-Storage (REQ-SRC-06). Gilt nur für diese Storage-Kombination.",
+            "doc_ref": "nextcloud-integration.md §2.2, SP-B, SP-C, DEC-IMM / Identitätsmodell",
+            "result": "FAIL",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "share_target": "/share20261009T164442Z",
+                "child_result": {
+                    "op": "move",
+                    "ok": true,
+                    "ret": {
+                        "path": "/alice/files/share20261009T164442Z/moveme.jpg",
+                        "id": 131,
+                        "id_before": 131
+                    },
+                    "exc": null,
+                    "pid": 460,
+                    "t0": 1791564292.669014,
+                    "t1": 1791564292.941252
+                },
+                "id_before": 131,
+                "id_after": 131,
+                "bob_side": {
+                    "moveme.jpg": {
+                        "id": 131,
+                        "sha256": "4264116bcbc9094498bb45fde02acc43adbd32c7e121367f1a35fd958d3f2f6a"
+                    }
+                }
+            },
+            "sha256_before": {
+                "moveme.jpg": "4264116bcbc9094498bb45fde02acc43adbd32c7e121367f1a35fd958d3f2f6a"
+            },
+            "sha256_after": [],
+            "file_ids_before": {
+                "moveme.jpg": 131
+            },
+            "file_ids_after": [],
+            "file_count_before": 1,
+            "file_count_after": 0,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": false,
+                    "desc": "File-ID ändert sich über die Storage-Grenze (Erwartung der Architektur)",
+                    "detail": [
+                        131,
+                        131
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt auf der Zielseite gleich",
+                    "detail": null
+                }
+            ],
+            "notes": [
+                "Storage-Klassen: Quelle OC\\Files\\Storage\\Home → Ziel Freigabe-Storage (OCA\\Files_Sharing\\SharedStorage über Jail); nur diese Kombination geprüft."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1415,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D01",
+            "spike": "SP-J",
+            "title": "Node::delete() verwendet den Nextcloud-Papierkorb; Identität, Erreichbarkeit und Inhalt des gelöschten Knotens",
+            "hypothesis": "Node::delete() verschiebt in den Papierkorb (nicht endgültig). Der Eintrag ist auffindbar (WebDAV und IRootFolder per File-ID), trägt dieselbe File-ID und denselben Inhalt.",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "getById_paths_after_delete": [
+                    "/alice/files_trashbin/files/photo.jpg.d1791564293"
+                ],
+                "hash_via_root_folder": "2fecdebe951a6a234741f265dfd98c1f6bfe5684341cd8c29114a045d5e3475b",
+                "trash_entries": [
+                    [
+                        "/remote.php/dav/trashbin/alice/trash/photo.jpg.d1791564293",
+                        {
+                            "getetag": "",
+                            "fileid": "133",
+                            "size": "4096",
+                            "getcontentlength": "4096",
+                            "getlastmodified": "Fri, 09 Oct 2026 16:44:53 GMT",
+                            "permissions": "GD",
+                            "trashbin-filename": "photo.jpg",
+                            "trashbin-original-location": "/spike/20261009T164442Z/D01/photo.jpg",
+                            "trashbin-deletion-time": "1791564293"
+                        }
+                    ]
+                ]
+            },
+            "sha256_before": {
+                "photo.jpg": "2fecdebe951a6a234741f265dfd98c1f6bfe5684341cd8c29114a045d5e3475b"
+            },
+            "sha256_after": [],
+            "file_ids_before": {
+                "photo.jpg": 133
+            },
+            "file_ids_after": [],
+            "file_count_before": 1,
+            "file_count_after": 0,
+            "api": [
+                {
+                    "label": "Node::delete()",
+                    "ok": true,
+                    "ret": null,
+                    "exc": null,
+                    "ms": 146.01
+                }
+            ],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Datei am Originalpfad nicht mehr vorhanden",
+                    "detail": []
+                },
+                {
+                    "ok": true,
+                    "desc": "File-ID löst über IRootFolder auf einen Knoten im Papierkorbbereich auf",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt des Papierkorb-Knotens (IRootFolder) = Inhalt vor dem Löschen",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "genau ein Papierkorbeintrag über WebDAV zum Originalpfad",
+                    "detail": 1
+                },
+                {
+                    "ok": true,
+                    "desc": "Papierkorbeintrag trägt dieselbe File-ID",
+                    "detail": [
+                        133,
+                        "133"
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "Löschzeit plausibel (innerhalb des Testfensters)",
+                    "detail": "1791564293"
+                },
+                {
+                    "ok": true,
+                    "desc": "Inhalt per WebDAV-GET im Papierkorb = Inhalt vor dem Löschen",
+                    "detail": 200
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 451,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D02",
+            "spike": "SP-J",
+            "title": "Nachweis einer Papierkorboperation (Pre-Delete-Hash beider Exemplare, Post-Beobachtung)",
+            "hypothesis": "Nach dem Löschen lässt sich allein über öffentliche APIs belegen: Duplikat nicht mehr am Ort, Papierkorbeintrag mit derselben File-ID und gleichem Hash vorhanden, kanonische Datei unverändert.",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "post_checks": {
+                    "duplicate_gone": true,
+                    "canonical_unchanged": true,
+                    "trash_node_by_id_hash_equal": true,
+                    "webdav_trash_entries": 1
+                }
+            },
+            "sha256_before": {
+                "canonical.jpg": "cbc29a454d94df96ed862fd08fc3025f762c5f06a5195b3e83b27c9286548915",
+                "dupe.jpg": "cbc29a454d94df96ed862fd08fc3025f762c5f06a5195b3e83b27c9286548915"
+            },
+            "sha256_after": {
+                "canonical.jpg": "cbc29a454d94df96ed862fd08fc3025f762c5f06a5195b3e83b27c9286548915"
+            },
+            "file_ids_before": {
+                "canonical.jpg": 135,
+                "dupe.jpg": 136
+            },
+            "file_ids_after": {
+                "canonical.jpg": 135
+            },
+            "file_count_before": 2,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Pre-Delete: beide Exemplare neu gehasht und gleich",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Duplikat nicht mehr am Ort",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "kanonische Datei unverändert (ID, Hash, ETag)",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Papierkorb-Knoten per File-ID auffindbar, Hash gleich Pre-Delete-Hash",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "WebDAV-Papierkorbeintrag mit identischer File-ID",
+                    "detail": null
+                }
+            ],
+            "notes": [
+                "Der Nachweis beruht auf der Identität über die File-ID und dem Hash des Papierkorb-Knotens; er belegt, dass der Inhalt erhalten ist, nicht dass er unbegrenzt erhalten bleibt (Retention)."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 532,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D03",
+            "spike": "SP-J",
+            "title": "Zwei Löschungen gleichnamiger Dateien am selben Pfad kurz nacheinander (gleiche Sekunde) und mit 2 s Abstand",
+            "hypothesis": "Zwei Papierkorbeinträge zum gleichen Originalpfad bleiben unterscheidbar und beide Inhalte erhalten – auch wenn sie in derselben Sekunde entstehen (Eintragsname trägt nur einen Sekundenzeitstempel).",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "FAIL",
+            "evidence": "counterexample",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "same_second": {
+                    "ids": {
+                        "A": 138,
+                        "B": 139
+                    },
+                    "delete_A_second": [
+                        1791564294,
+                        1791564294
+                    ],
+                    "delete_B_second": [
+                        1791564294,
+                        1791564294
+                    ],
+                    "trash_entries": [
+                        [
+                            "same.jpg.d1791564294",
+                            "139",
+                            "1791564294"
+                        ]
+                    ],
+                    "content_A_reachable_by_id": [],
+                    "content_B_reachable_by_id": [
+                        "/alice/files_trashbin/files/same.jpg.d1791564294"
+                    ],
+                    "hashes_via_webdav": {
+                        "139": "27d11b6ed393b4a45f5ea1307bdfafe6f8e16b97b7fdf3548533a6abaa4b92f6"
+                    }
+                },
+                "two_seconds_apart": {
+                    "ids": {
+                        "A": 141,
+                        "B": 142
+                    },
+                    "delete_A_second": [
+                        1791564294,
+                        1791564295
+                    ],
+                    "delete_B_second": [
+                        1791564297,
+                        1791564297
+                    ],
+                    "trash_entries": [
+                        [
+                            "same.jpg.d1791564294",
+                            "141",
+                            "1791564294"
+                        ],
+                        [
+                            "same.jpg.d1791564297",
+                            "142",
+                            "1791564297"
+                        ]
+                    ],
+                    "content_A_reachable_by_id": [
+                        "/alice/files_trashbin/files/same.jpg.d1791564294"
+                    ],
+                    "content_B_reachable_by_id": [
+                        "/alice/files_trashbin/files/same.jpg.d1791564297"
+                    ],
+                    "hashes_via_webdav": {
+                        "141": "57b00c5f565f9392284ce519875c6d6cd8d492c2d7cf3b58122413f07491a48c",
+                        "142": "5e8dd10811894a7a72e4470879b84c51f03d530bebaaca6478f0e6100909ac4e"
+                    }
+                }
+            },
+            "sha256_before": null,
+            "sha256_after": null,
+            "file_ids_before": null,
+            "file_ids_after": null,
+            "file_count_before": null,
+            "file_count_after": null,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": false,
+                    "desc": "same_second: zwei getrennte Papierkorbeinträge, beide Inhalte über ihre File-ID erhalten",
+                    "detail": {
+                        "entries": 1,
+                        "hashes": {
+                            "139": "27d11b6ed393b4a45f5ea1307bdfafe6f8e16b97b7fdf3548533a6abaa4b92f6"
+                        }
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "two_seconds_apart: zwei getrennte Papierkorbeinträge, beide Inhalte über ihre File-ID erhalten",
+                    "detail": {
+                        "entries": 2,
+                        "hashes": {
+                            "141": "57b00c5f565f9392284ce519875c6d6cd8d492c2d7cf3b58122413f07491a48c",
+                            "142": "5e8dd10811894a7a72e4470879b84c51f03d530bebaaca6478f0e6100909ac4e"
+                        }
+                    }
+                }
+            ],
+            "notes": [
+                "same_second: ein Papierkorbeintrag fehlt – der später gelöschte Inhalt hat den früheren ersetzt (Eintragsname = Name + Sekundenzeitstempel)."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 3482,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D04",
+            "spike": "SP-J",
+            "title": "Restore bei inzwischen vorhandener Zieldatei",
+            "hypothesis": "Die Wiederherstellung überschreibt eine inzwischen am Originalpfad vorhandene Datei nicht.",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "restore_response": {
+                    "method": "MOVE",
+                    "status": 201,
+                    "curl_error": null,
+                    "etag": null,
+                    "oc_fileid": null,
+                    "ms": 167.1,
+                    "body_head": null
+                },
+                "names_after": [
+                    "x (restored).jpg",
+                    "x.jpg"
+                ],
+                "restored_under": [
+                    "x (restored).jpg"
+                ],
+                "restored_id_equals_original": true
+            },
+            "sha256_before": {
+                "x.jpg": "36cbf1645f7eda72f5d01e91f5d64553145c35f3e9be58d940b94f7f9f3aeacc"
+            },
+            "sha256_after": {
+                "x (restored).jpg": "9f416ab15f9157dc45f26eb3bc027967a338d6eeb36fa79872ccff4558cf67cd",
+                "x.jpg": "36cbf1645f7eda72f5d01e91f5d64553145c35f3e9be58d940b94f7f9f3aeacc"
+            },
+            "file_ids_before": {
+                "x.jpg": 145
+            },
+            "file_ids_after": {
+                "x (restored).jpg": 144,
+                "x.jpg": 145
+            },
+            "file_count_before": 1,
+            "file_count_after": 2,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "die inzwischen vorhandene Datei x.jpg ist unverändert",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "wiederhergestellter Inhalt unter anderem Namen oder Restore abgelehnt (kein Überschreiben)",
+                    "detail": [
+                        "x (restored).jpg",
+                        "x.jpg"
+                    ]
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 686,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D05",
+            "spike": "SP-J",
+            "title": "Löschen per WebDAV DELETE und Löschen eines Ordners",
+            "hypothesis": "WebDAV DELETE und Ordner-Löschung führen ebenfalls in den Papierkorb; File-IDs der Kinder bleiben erhalten.",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "dav_delete": {
+                    "method": "DELETE",
+                    "status": 204,
+                    "curl_error": null,
+                    "etag": null,
+                    "oc_fileid": null,
+                    "ms": 162.1,
+                    "body_head": null
+                },
+                "children_by_id_after_folder_delete": {
+                    "149": [
+                        "/alice/files_trashbin/files/folder.d1791564298/k1.jpg"
+                    ],
+                    "150": [
+                        "/alice/files_trashbin/files/folder.d1791564298/k2.jpg"
+                    ]
+                },
+                "folder_trash_entries": 1
+            },
+            "sha256_before": {
+                "folder/k1.jpg": "ec16ebc5f5a019e36087b301d905538272422b5c8f793e83b5f2e3ef4b53f1fa",
+                "folder/k2.jpg": "6655535c1cfb25bb54f6aa3c55e21a3c8e7f22f9f03c98d33a2327e21c93c670",
+                "viadav.jpg": "1d37d99e8e276dc58fbb9523ed3582686d248866006007bf65e8eb3a0570ba0a"
+            },
+            "sha256_after": [],
+            "file_ids_before": {
+                "folder/k1.jpg": 149,
+                "folder/k2.jpg": 150,
+                "viadav.jpg": 147
+            },
+            "file_ids_after": [],
+            "file_count_before": 4,
+            "file_count_after": 0,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "WebDAV-DELETE: Knoten per File-ID im Papierkorbbereich",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "Kinder des gelöschten Ordners sind per File-ID im Papierkorbbereich auffindbar",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 820,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "D06",
+            "spike": "SP-J",
+            "title": "Fähigkeitserkennung trash_verified (nicht destruktiv)",
+            "hypothesis": "Der Papierkorb-Betrieb ist ohne Löschversuch erkennbar: App files_trashbin aktiv und Papierkorb-Storage-Wrapper im Heim-Storage; die Prüfung allein beweist noch nicht, dass jede Löschung im Papierkorb landet.",
+            "doc_ref": "job-processing.md §6.4, DEC-DUP-010, SP-J, trash_verified",
+            "result": "PASS",
+            "evidence": "static_analysis",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "files_trashbin_enabled": true,
+                "storage_chain_contains_trashbin_wrapper": true,
+                "trashbin_retention_obligation": "auto (Standard)"
+            },
+            "sha256_before": null,
+            "sha256_after": null,
+            "file_ids_before": null,
+            "file_ids_after": null,
+            "file_count_before": null,
+            "file_count_after": null,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "Papierkorb aktiv und im Storage-Stack erkennbar",
+                    "detail": null
+                }
+            ],
+            "notes": [
+                "Der Fall „Papierkorb deaktiviert → Node::delete löscht endgültig“ wurde bewusst NICHT experimentell geprüft (Auftrag 5: keine dauerhaft irreversible Löschung im Harness); er folgt nur aus dem Quelltext (Trash-Wrapper entfällt, Local::unlink löscht direkt)."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 0,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E01",
+            "spike": "Events",
+            "title": "App-interne Dateioperationen über die Node-API (CLI-Prozess): Create, Write, Rename, Move, Copy, Delete",
+            "hypothesis": "Jede App-Operation löst genau ein Hauptereignis (NodeCreated / NodeRenamed / NodeCopied / NodeDeleted) aus; Mehrfachzustellung tritt nicht auf. (Naive Erwartung; Abweichungen zeigen den Idempotenzbedarf.)",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "node_newFile": {
+                    "NodeCreatedEvent": "1..1",
+                    "NodeWrittenEvent": "1..n"
+                },
+                "node_putContent": {
+                    "NodeCreatedEvent": "0..0",
+                    "NodeWrittenEvent": "1..n"
+                },
+                "node_rename_same_folder": {
+                    "BeforeNodeRenamedEvent": "1..1",
+                    "NodeRenamedEvent": "1..1",
+                    "NodeCreatedEvent": "0..0",
+                    "NodeDeletedEvent": "0..0"
+                },
+                "node_move_other_folder": {
+                    "NodeRenamedEvent": "1..1",
+                    "NodeCreatedEvent": "0..0",
+                    "NodeDeletedEvent": "0..0"
+                },
+                "node_copy": {
+                    "NodeCopiedEvent": "1..1"
+                },
+                "node_touch": {
+                    "NodeTouchedEvent": "1..1"
+                },
+                "node_delete": {
+                    "NodeDeletedEvent": "1..1",
+                    "BeforeNodeDeletedEvent": "1..1"
+                }
+            },
+            "observed": {
+                "sequence:node_newFile": [
+                    "+8.8ms BeforeNodeCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+11.5ms BeforeNodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+47.8ms VersionCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=5000",
+                    "+47.9ms NodeCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=5000",
+                    "+76.3ms NodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=5000"
+                ],
+                "counts:node_newFile": {
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 2,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:node_putContent": [
+                    "+17.5ms CreateVersionEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=5000",
+                    "+156.7ms BeforeNodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=5000",
+                    "+229.9ms VersionCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=6000",
+                    "+230ms NodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=6000"
+                ],
+                "counts:node_putContent": {
+                    "CreateVersionEvent": 1,
+                    "CacheEntryInsertedEvent": 4,
+                    "CacheEntryUpdatedEvent": 12,
+                    "BeforeNodeWrittenEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:node_rename_same_folder": [
+                    "+23.9ms BeforeNodeRenamedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/a.bin#153 size=6000 target=/alice/files/spike/20261009T164442Z/E01/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+116ms NodeRenamedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E01/b.bin#153 size=6000"
+                ],
+                "counts:node_rename_same_folder": {
+                    "BeforeNodeRenamedEvent": 1,
+                    "CacheEntryUpdatedEvent": 4,
+                    "NodeRenamedEvent": 1
+                },
+                "sequence:node_move_other_folder": [
+                    "+18.8ms BeforeNodeRenamedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/b.bin#153 size=6000 target=/alice/files/spike/20261009T164442Z/E01/dst/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+115.9ms NodeRenamedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E01/dst/b.bin#153 size=6000"
+                ],
+                "counts:node_move_other_folder": {
+                    "BeforeNodeRenamedEvent": 1,
+                    "CacheEntryUpdatedEvent": 13,
+                    "NodeRenamedEvent": 1
+                },
+                "sequence:node_copy": [
+                    "+17.3ms BeforeNodeCopiedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/dst/b.bin#153 size=6000 target=/alice/files/spike/20261009T164442Z/E01/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+19.3ms BeforeNodeCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+21.3ms BeforeNodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+79.4ms NodeCopiedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E01/dst/b.bin#153 size=6000 target=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+93.7ms VersionCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+93.8ms NodeCreatedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+125.5ms NodeWrittenEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000"
+                ],
+                "counts:node_copy": {
+                    "BeforeNodeCopiedEvent": 1,
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 7,
+                    "NodeCopiedEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:node_touch": [
+                    "+8.3ms BeforeNodeTouchedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+18.9ms NodeTouchedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000"
+                ],
+                "counts:node_touch": {
+                    "BeforeNodeTouchedEvent": 1,
+                    "CacheEntryUpdatedEvent": 2,
+                    "NodeTouchedEvent": 1
+                },
+                "sequence:node_delete": [
+                    "+16.1ms BeforeNodeDeletedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+35.5ms MoveToTrashEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000",
+                    "+132.9ms NodeDeletedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E01/copy.bin#156 size=6000"
+                ],
+                "counts:node_delete": {
+                    "BeforeNodeDeletedEvent": 1,
+                    "MoveToTrashEvent": 1,
+                    "CacheEntryUpdatedEvent": 11,
+                    "NodeDeletedEvent": 1
+                }
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "dst/b.bin": "ef6b582e04d18c5bfbf989cd3a6b39f05c0e7af2fcf020623b83debb89bc8b7b"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "dst/b.bin": 153
+            },
+            "file_count_before": null,
+            "file_count_after": 2,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "node_newFile: NodeCreatedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 2,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_newFile: NodeWrittenEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 2,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_putContent: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "CreateVersionEvent": 1,
+                        "CacheEntryInsertedEvent": 4,
+                        "CacheEntryUpdatedEvent": 12,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_putContent: NodeWrittenEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "CreateVersionEvent": 1,
+                        "CacheEntryInsertedEvent": 4,
+                        "CacheEntryUpdatedEvent": 12,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_rename_same_folder: BeforeNodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 4,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_rename_same_folder: NodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 4,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_rename_same_folder: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 4,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_rename_same_folder: NodeDeletedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 4,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_move_other_folder: NodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 13,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_move_other_folder: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 13,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_move_other_folder: NodeDeletedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 13,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_copy: NodeCopiedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCopiedEvent": 1,
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 7,
+                        "NodeCopiedEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_touch: NodeTouchedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeTouchedEvent": 1,
+                        "CacheEntryUpdatedEvent": 2,
+                        "NodeTouchedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_delete: NodeDeletedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeDeletedEvent": 1,
+                        "MoveToTrashEvent": 1,
+                        "CacheEntryUpdatedEvent": 11,
+                        "NodeDeletedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "node_delete: BeforeNodeDeletedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeDeletedEvent": 1,
+                        "MoveToTrashEvent": 1,
+                        "CacheEntryUpdatedEvent": 11,
+                        "NodeDeletedEvent": 1
+                    }
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 7437,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E02",
+            "spike": "Events",
+            "title": "WebDAV-Operationen eines Clients (Apache-Prozess): PUT neu/überschreiben, MOVE (Rename/Move), COPY, DELETE",
+            "hypothesis": "WebDAV-Aktionen lösen dieselben Ereignisklassen aus wie die Node-API, und zwar im Webserver-Prozess (nicht im Cron/CLI-Kontext des Organizers).",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "dav_put_new": {
+                    "NodeCreatedEvent": "1..1",
+                    "NodeWrittenEvent": "1..n"
+                },
+                "dav_put_overwrite": {
+                    "NodeCreatedEvent": "0..0",
+                    "NodeWrittenEvent": "1..n"
+                },
+                "dav_move_rename": {
+                    "NodeRenamedEvent": "1..1",
+                    "NodeCreatedEvent": "0..0",
+                    "NodeDeletedEvent": "0..0"
+                },
+                "dav_move_other_folder": {
+                    "NodeRenamedEvent": "1..1",
+                    "NodeCreatedEvent": "0..0",
+                    "NodeDeletedEvent": "0..0"
+                },
+                "dav_copy": {
+                    "NodeCopiedEvent": "1..1"
+                },
+                "dav_delete": {
+                    "NodeDeletedEvent": "1..1"
+                },
+                "dav_mkcol": {
+                    "NodeCreatedEvent": "1..1"
+                }
+            },
+            "observed": {
+                "sequence:dav_put_new": [
+                    "+69ms BeforeNodeCreatedEvent [apache2handler pid=429 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+70.7ms BeforeNodeWrittenEvent [apache2handler pid=429 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+108.6ms VersionCreatedEvent [apache2handler pid=429 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000",
+                    "+108.8ms NodeCreatedEvent [apache2handler pid=429 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000",
+                    "+144.2ms NodeWrittenEvent [apache2handler pid=429 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000"
+                ],
+                "counts:dav_put_new": {
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 6,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:dav_put_overwrite": [
+                    "+67.1ms CreateVersionEvent [apache2handler pid=430 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000",
+                    "+156ms BeforeNodeWrittenEvent [apache2handler pid=430 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000",
+                    "+228.8ms VersionCreatedEvent [apache2handler pid=430 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000",
+                    "+229ms NodeWrittenEvent [apache2handler pid=430 PUT] node=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000"
+                ],
+                "counts:dav_put_overwrite": {
+                    "CreateVersionEvent": 1,
+                    "CacheEntryInsertedEvent": 4,
+                    "CacheEntryUpdatedEvent": 13,
+                    "BeforeNodeWrittenEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:dav_move_rename": [
+                    "+64.9ms BeforeNodeRenamedEvent [apache2handler pid=431 MOVE] source=/alice/files/spike/20261009T164442Z/E02/a.bin#159 size=200000 target=/alice/files/spike/20261009T164442Z/E02/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+158.6ms NodeRenamedEvent [apache2handler pid=431 MOVE] source=/alice/files/spike/20261009T164442Z/E02/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E02/b.bin#159 size=200000"
+                ],
+                "counts:dav_move_rename": {
+                    "BeforeNodeRenamedEvent": 1,
+                    "CacheEntryUpdatedEvent": 8,
+                    "NodeRenamedEvent": 1
+                },
+                "sequence:dav_move_other_folder": [
+                    "+92.1ms BeforeNodeRenamedEvent [apache2handler pid=452 MOVE] source=/alice/files/spike/20261009T164442Z/E02/b.bin#159 size=200000 target=/alice/files/spike/20261009T164442Z/E02/dst/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+227.4ms NodeRenamedEvent [apache2handler pid=452 MOVE] source=/alice/files/spike/20261009T164442Z/E02/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E02/dst/b.bin#159 size=200000"
+                ],
+                "counts:dav_move_other_folder": {
+                    "BeforeNodeRenamedEvent": 1,
+                    "CacheEntryUpdatedEvent": 28,
+                    "CacheEntryInsertedEvent": 2,
+                    "NodeRenamedEvent": 1
+                },
+                "sequence:dav_copy": [
+                    "+65.4ms BeforeNodeCopiedEvent [apache2handler pid=427 COPY] source=/alice/files/spike/20261009T164442Z/E02/dst/b.bin#159 size=200000 target=/alice/files/spike/20261009T164442Z/E02/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+66.5ms BeforeNodeCreatedEvent [apache2handler pid=427 COPY] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+67.6ms BeforeNodeWrittenEvent [apache2handler pid=427 COPY] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+151.1ms NodeCopiedEvent [apache2handler pid=427 COPY] source=/alice/files/spike/20261009T164442Z/E02/dst/b.bin#159 size=200000 target=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000",
+                    "+163.4ms VersionCreatedEvent [apache2handler pid=427 COPY] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000",
+                    "+163.5ms NodeCreatedEvent [apache2handler pid=427 COPY] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000",
+                    "+190ms NodeWrittenEvent [apache2handler pid=427 COPY] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000"
+                ],
+                "counts:dav_copy": {
+                    "BeforeNodeCopiedEvent": 1,
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 4,
+                    "CacheEntryUpdatedEvent": 14,
+                    "NodeCopiedEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "sequence:dav_delete": [
+                    "+64.9ms BeforeNodeDeletedEvent [apache2handler pid=429 DELETE] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000",
+                    "+78.3ms MoveToTrashEvent [apache2handler pid=429 DELETE] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000",
+                    "+180.4ms NodeDeletedEvent [apache2handler pid=429 DELETE] node=/alice/files/spike/20261009T164442Z/E02/copy.bin#163 size=200000"
+                ],
+                "counts:dav_delete": {
+                    "BeforeNodeDeletedEvent": 1,
+                    "MoveToTrashEvent": 1,
+                    "CacheEntryUpdatedEvent": 21,
+                    "NodeDeletedEvent": 1
+                },
+                "sequence:dav_mkcol": [
+                    "+61ms BeforeNodeCreatedEvent [apache2handler pid=430 MKCOL] node=/alice/files/spike/20261009T164442Z/E02/newdir#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+62ms BeforeNodeWrittenEvent [apache2handler pid=430 MKCOL] node=/alice/files/spike/20261009T164442Z/E02/newdir#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+79ms NodeCreatedEvent [apache2handler pid=430 MKCOL] node=/alice/files/spike/20261009T164442Z/E02/newdir#165 size=0",
+                    "+103.6ms NodeWrittenEvent [apache2handler pid=430 MKCOL] node=/alice/files/spike/20261009T164442Z/E02/newdir#165 size=0"
+                ],
+                "counts:dav_mkcol": {
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 2,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                }
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "dst/b.bin": "1369544de3ea4480400d17fc37b11f0c5bbd68b88a569784cb0e4072ae9d4286"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "dst/b.bin": 159
+            },
+            "file_count_before": null,
+            "file_count_after": 3,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "dav_put_new: NodeCreatedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 6,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_put_new: NodeWrittenEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 6,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_put_overwrite: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "CreateVersionEvent": 1,
+                        "CacheEntryInsertedEvent": 4,
+                        "CacheEntryUpdatedEvent": 13,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_put_overwrite: NodeWrittenEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "CreateVersionEvent": 1,
+                        "CacheEntryInsertedEvent": 4,
+                        "CacheEntryUpdatedEvent": 13,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_rename: NodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 8,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_rename: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 8,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_rename: NodeDeletedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 8,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_other_folder: NodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 28,
+                        "CacheEntryInsertedEvent": 2,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_other_folder: NodeCreatedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 28,
+                        "CacheEntryInsertedEvent": 2,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_move_other_folder: NodeDeletedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 28,
+                        "CacheEntryInsertedEvent": 2,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_copy: NodeCopiedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCopiedEvent": 1,
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 4,
+                        "CacheEntryUpdatedEvent": 14,
+                        "NodeCopiedEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_delete: NodeDeletedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeDeletedEvent": 1,
+                        "MoveToTrashEvent": 1,
+                        "CacheEntryUpdatedEvent": 21,
+                        "NodeDeletedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "dav_mkcol: NodeCreatedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "CacheEntryInsertedEvent": 2,
+                        "CacheEntryUpdatedEvent": 2,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1
+                    }
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 7818,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E03",
+            "spike": "Events",
+            "title": "Chunked Upload v2 (Nextcloud-/Mobil-/Desktop-Clients): wann und wie oft Ereignisse für die Zieldatei",
+            "hypothesis": "Beim Chunked Upload entsteht die Zieldatei erst beim abschließenden MOVE; Zwischenstände (Chunks) lösen keine Ereignisse für den Zielpfad aus, und die Zieldatei ist bei den Ereignissen vollständig.",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "chunked_upload_v2": {
+                    "NodeCreatedEvent": "1..n"
+                }
+            },
+            "observed": {
+                "sequence:chunked_upload_v2": [
+                    "+295.9ms BeforeNodeCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+297.1ms BeforeNodeWrittenEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+335.6ms VersionCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000",
+                    "+335.8ms NodeCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000",
+                    "+365.7ms NodeWrittenEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000"
+                ],
+                "counts:chunked_upload_v2": {
+                    "CacheEntryInsertedEvent": 10,
+                    "CacheEntryUpdatedEvent": 19,
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1,
+                    "CacheEntriesRemovedEvent": 1,
+                    "CacheEntryRemovedEvent": 3
+                },
+                "http": [
+                    {
+                        "method": "MKCOL",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 87.4,
+                        "body_head": null
+                    },
+                    {
+                        "method": "PUT",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 65.9,
+                        "body_head": null
+                    },
+                    {
+                        "method": "PUT",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 70.4,
+                        "body_head": null
+                    },
+                    {
+                        "method": "MOVE",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": "\"772d6bec88ca5f8d3a53782ad1ce4190\"",
+                        "oc_fileid": "00000171ocvpw36zi0xw",
+                        "ms": 163.1,
+                        "body_head": null
+                    }
+                ],
+                "events_for_target_only": [
+                    "+295.9ms BeforeNodeCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+297.1ms BeforeNodeWrittenEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+304.4ms CacheEntryInsertedEvent [apache2handler pid=428 MOVE] path='files/spike/20261009T164442Z/E03/big.bin' storageId=3 fileId=171",
+                    "+304.5ms CacheEntryInsertedEvent [apache2handler pid=428 MOVE] path='files/spike/20261009T164442Z/E03/big.bin' storageId=3 fileId=171",
+                    "+322.8ms CacheEntryUpdatedEvent [apache2handler pid=428 MOVE] path='files/spike/20261009T164442Z/E03/big.bin' storageId=3 fileId=171",
+                    "+335.6ms VersionCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000",
+                    "+335.8ms NodeCreatedEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000",
+                    "+365.7ms NodeWrittenEvent [apache2handler pid=428 MOVE] node=/alice/files/spike/20261009T164442Z/E03/big.bin#171 size=300000"
+                ],
+                "events_for_target_classes": {
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "target_events_before_move_completed": null,
+                "events_for_upload_area": [],
+                "sizes_in_after_events": [
+                    null,
+                    null,
+                    null,
+                    300000,
+                    300000,
+                    300000
+                ]
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "big.bin": "9e509ca73714dfe8a850ea5604ef359a38a8f6d8f4844154c32d3b4d9be2f2fc"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "big.bin": 171
+            },
+            "file_count_before": null,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "chunked_upload_v2: NodeCreatedEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "CacheEntryInsertedEvent": 10,
+                        "CacheEntryUpdatedEvent": 19,
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1,
+                        "CacheEntriesRemovedEvent": 1,
+                        "CacheEntryRemovedEvent": 3
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "zusammengesetzte Datei korrekt (Testvoraussetzung)",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "in allen After-Events für die Zieldatei ist die Datei bereits vollständig (Größe = Gesamtlänge)",
+                    "detail": [
+                        null,
+                        null,
+                        null,
+                        300000,
+                        300000,
+                        300000
+                    ]
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1357,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E04",
+            "spike": "Events",
+            "title": "Papierkorb: Delete und Restore (Node-API und WebDAV-Restore)",
+            "hypothesis": "Löschen löst NodeDeleted + MoveToTrash aus; die Wiederherstellung ist an eigenen Ereignissen (NodeRestored / NodeCreated) erkennbar, nicht als Rename.",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "trash_by_node_delete": {
+                    "NodeDeletedEvent": "1..1",
+                    "MoveToTrashEvent": "1..1"
+                },
+                "restore_via_webdav": {
+                    "NodeRestoredEvent": "1..1",
+                    "NodeRenamedEvent": "0..0"
+                }
+            },
+            "observed": {
+                "sequence:trash_by_node_delete": [
+                    "+15.5ms BeforeNodeDeletedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000",
+                    "+35.9ms MoveToTrashEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000",
+                    "+120.6ms NodeDeletedEvent [cli pid=442 -] node=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000"
+                ],
+                "counts:trash_by_node_delete": {
+                    "BeforeNodeDeletedEvent": 1,
+                    "MoveToTrashEvent": 1,
+                    "CacheEntryUpdatedEvent": 11,
+                    "NodeDeletedEvent": 1
+                },
+                "sequence:restore_via_webdav": [
+                    "+59.8ms BeforeNodeRestoredEvent [apache2handler pid=430 MOVE] source=/alice/files_trashbin/files/x.bin.d1791564316#173 size=3000 target=/alice/files/spike/20261009T164442Z/E04/x.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+101.5ms BeforeNodeTouchedEvent [apache2handler pid=430 MOVE] node=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000",
+                    "+109.4ms NodeTouchedEvent [apache2handler pid=430 MOVE] node=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000",
+                    "+129.2ms NodeRestoredEvent [apache2handler pid=430 MOVE] source=/alice/files_trashbin/files/x.bin.d1791564316#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E04/x.bin#173 size=3000"
+                ],
+                "counts:restore_via_webdav": {
+                    "BeforeNodeRestoredEvent": 1,
+                    "CacheEntryUpdatedEvent": 12,
+                    "BeforeNodeTouchedEvent": 1,
+                    "NodeTouchedEvent": 1,
+                    "NodeRestoredEvent": 1
+                }
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "x.bin": "3d3aef3536435ca30944f2fa9befb6f7b54ddfadbbf90aae96365a9e94d9a842"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "x.bin": 173
+            },
+            "file_count_before": null,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "trash_by_node_delete: NodeDeletedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeDeletedEvent": 1,
+                        "MoveToTrashEvent": 1,
+                        "CacheEntryUpdatedEvent": 11,
+                        "NodeDeletedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "trash_by_node_delete: MoveToTrashEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeDeletedEvent": 1,
+                        "MoveToTrashEvent": 1,
+                        "CacheEntryUpdatedEvent": 11,
+                        "NodeDeletedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "restore_via_webdav: NodeRestoredEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRestoredEvent": 1,
+                        "CacheEntryUpdatedEvent": 12,
+                        "BeforeNodeTouchedEvent": 1,
+                        "NodeTouchedEvent": 1,
+                        "NodeRestoredEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "restore_via_webdav: NodeRenamedEvent erwartet 0..0, beobachtet 0",
+                    "detail": {
+                        "BeforeNodeRestoredEvent": 1,
+                        "CacheEntryUpdatedEvent": 12,
+                        "BeforeNodeTouchedEvent": 1,
+                        "NodeTouchedEvent": 1,
+                        "NodeRestoredEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "File-ID nach Restore unverändert (Querverweis B05)",
+                    "detail": null
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 2236,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E05",
+            "spike": "Events",
+            "title": "Identitätsmerkmale der Ereignisse (Pfad, File-ID, Quelle/Ziel) über alle Szenarien",
+            "hypothesis": "Alle After-Ereignisse tragen File-ID und Pfad des betroffenen Knotens; NodeRenamedEvent trägt Quelle und Ziel mit derselben File-ID.",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "FAIL",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": [],
+            "observed": {
+                "renamed_events": [
+                    "+70.9ms NodeRenamedEvent [cli pid=442 -] source=/alice/files/spike/20261009T164442Z/E05/a.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E05/b.bin#175 size=2000",
+                    "+201.5ms NodeRenamedEvent [apache2handler pid=431 MOVE] source=/alice/files/spike/20261009T164442Z/E05/b.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E05/c.bin#175 size=2000"
+                ],
+                "source_node_id_in_cli_event": "ERR:OCP\\Files\\NotFoundException",
+                "source_node_id_in_apache2handler_event": "ERR:OCP\\Files\\NotFoundException",
+                "after_events_with_node_ids": []
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "c.bin": "fb3852f60d11085eea366072c25ba113b38f0af298dece187bf7bab94e6b8fa1"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "c.bin": 175
+            },
+            "file_count_before": null,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "zwei NodeRenamedEvent (einer je Rename)",
+                    "detail": 2
+                },
+                {
+                    "ok": true,
+                    "desc": "NodeRenamedEvent: das Ziel-Node trägt die File-ID 175",
+                    "detail": [
+                        175,
+                        "cli"
+                    ]
+                },
+                {
+                    "ok": false,
+                    "desc": "NodeRenamedEvent: auch das Quell-Node liefert die File-ID (Erwartung der bisherigen Dokumentation)",
+                    "detail": [
+                        "ERR:OCP\\Files\\NotFoundException",
+                        "cli"
+                    ]
+                },
+                {
+                    "ok": true,
+                    "desc": "NodeRenamedEvent: das Ziel-Node trägt die File-ID 175",
+                    "detail": [
+                        175,
+                        "apache2handler"
+                    ]
+                },
+                {
+                    "ok": false,
+                    "desc": "NodeRenamedEvent: auch das Quell-Node liefert die File-ID (Erwartung der bisherigen Dokumentation)",
+                    "detail": [
+                        "ERR:OCP\\Files\\NotFoundException",
+                        "apache2handler"
+                    ]
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1278,
+            "run_id": "20261009T164442Z"
+        },
+        {
+            "case_id": "E06",
+            "spike": "Events",
+            "title": "Ordner-Move: Ereignisse für den Ordner und für enthaltene Dateien (group_follow-Erkennung)",
+            "hypothesis": "Beim Verschieben eines Ordners mit Dateien entsteht genau ein NodeRenamedEvent für den Ordner; für die enthaltenen Dateien gibt es keine eigenen NodeRenamedEvents (Pfadänderung der Kinder muss aus dem Ordner-Ereignis abgeleitet werden).",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "dav_move_folder_with_children": {
+                    "NodeRenamedEvent": "1..1"
+                }
+            },
+            "observed": {
+                "sequence:dav_move_folder_with_children": [
+                    "+67.3ms BeforeNodeRenamedEvent [apache2handler pid=452 MOVE] source=/alice/files/spike/20261009T164442Z/E06/album#178 size=1300 target=/alice/files/spike/20261009T164442Z/E06/dst/album#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+132.1ms NodeRenamedEvent [apache2handler pid=452 MOVE] source=/alice/files/spike/20261009T164442Z/E06/album#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException target=/alice/files/spike/20261009T164442Z/E06/dst/album#178 size=1300"
+                ],
+                "counts:dav_move_folder_with_children": {
+                    "BeforeNodeRenamedEvent": 1,
+                    "CacheEntryUpdatedEvent": 13,
+                    "NodeRenamedEvent": 1
+                },
+                "renamed_event_targets": [
+                    "/alice/files/spike/20261009T164442Z/E06/dst/album#178"
+                ],
+                "cache_updated_events_for_children": []
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "dst/album/IMG_0001.jpg": "5f07a09a417c0168d125d66979dfb204b84d09949c40f01df1f352bad1e4a93c",
+                "dst/album/IMG_0001.xmp": "dfd7db1663cfaac24e87a7934939340a6a966fddfb9d5cd22fe5045e9cf32217"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "dst/album/IMG_0001.jpg": 179,
+                "dst/album/IMG_0001.xmp": 180
+            },
+            "file_count_before": null,
+            "file_count_after": 4,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "dav_move_folder_with_children: NodeRenamedEvent erwartet 1..1, beobachtet 1",
+                    "detail": {
+                        "BeforeNodeRenamedEvent": 1,
+                        "CacheEntryUpdatedEvent": 13,
+                        "NodeRenamedEvent": 1
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "Kinder behalten ihre File-IDs",
+                    "detail": null
+                }
+            ],
+            "notes": [
+                "Ob CacheEntryUpdatedEvent für die Kinder verlässlich ausgeliefert wird, ist nur hier beobachtet; als Erkennungsquelle für Kinder-Pfadänderungen ist der Ordner-Rename plus ein Teilbaum-Abgleich (Listing nach file_id) vorzusehen."
+            ],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 1426,
+            "run_id": "20261009T164442Z"
+        }
+    ]
+}

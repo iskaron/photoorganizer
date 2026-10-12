@@ -1,0 +1,146 @@
+{
+    "OC\\Files\\Node\\Node::move": {
+        "file": "lib/private/Files/Node/Node.php",
+        "lines": [
+            461,
+            498
+        ],
+        "tokens": 266,
+        "sha256": "7d8738995b84ade8522caf68"
+    },
+    "OC\\Files\\Node\\Folder::newFile": {
+        "file": "lib/private/Files/Node/Folder.php",
+        "lines": [
+            172,
+            195
+        ],
+        "tokens": 207,
+        "sha256": "3b49482d06e20746a9e48ba4"
+    },
+    "OC\\Files\\View::rename": {
+        "file": "lib/private/Files/View.php",
+        "lines": [
+            731,
+            880
+        ],
+        "tokens": 931,
+        "sha256": "aa5e979cf0a473ef3a1f3e78"
+    },
+    "OC\\Files\\View::file_put_contents": {
+        "file": "lib/private/Files/View.php",
+        "lines": [
+            619,
+            681
+        ],
+        "tokens": 363,
+        "sha256": "5ca309678102cba46c3de54e"
+    },
+    "OC\\Files\\View::lockFile": {
+        "file": "lib/private/Files/View.php",
+        "lines": [
+            2183,
+            2198
+        ],
+        "tokens": 90,
+        "sha256": "82ecbcae0f94f5f428d7d7f0"
+    },
+    "OC\\Files\\Storage\\Local::rename": {
+        "file": "lib/private/Files/Storage/Local.php",
+        "lines": [
+            355,
+            421
+        ],
+        "tokens": 379,
+        "sha256": "2e3879210acb41d5c195da79"
+    },
+    "OC\\Files\\Storage\\Local::unlink": {
+        "file": "lib/private/Files/Storage/Local.php",
+        "lines": [
+            334,
+            342
+        ],
+        "tokens": 59,
+        "sha256": "192d3d74d9f274089352567b"
+    },
+    "OC\\Files\\Storage\\Common::rename": {
+        "file": "lib/private/Files/Storage/Common.php",
+        "lines": [
+            210,
+            215
+        ],
+        "tokens": 46,
+        "sha256": "f7c75c33cbaa593f1da2f698"
+    },
+    "OC\\Files\\Storage\\Common::acquireLock": {
+        "file": "lib/private/Files/Storage/Common.php",
+        "lines": [
+            683,
+            708
+        ],
+        "tokens": 168,
+        "sha256": "5a6434ac2c559516ca19b7fb"
+    },
+    "OC\\Lock\\MemcacheLockingProvider::acquireLock": {
+        "file": "lib/private/Lock/MemcacheLockingProvider.php",
+        "lines": [
+            64,
+            85
+        ],
+        "tokens": 167,
+        "sha256": "400892e39e65698a69423433"
+    },
+    "OC\\Lock\\MemcacheLockingProvider::changeLock": {
+        "file": "lib/private/Lock/MemcacheLockingProvider.php",
+        "lines": [
+            122,
+            137
+        ],
+        "tokens": 136,
+        "sha256": "6efdd3868f5915c603dae822"
+    },
+    "OCA\\Files_Trashbin\\Storage::unlink": {
+        "file": "apps/files_trashbin/lib/Storage.php",
+        "lines": [
+            48,
+            63
+        ],
+        "tokens": 80,
+        "sha256": "7b17d521ab298e80fccfad62"
+    },
+    "OCA\\Files_Trashbin\\Storage::moveFromStorage": {
+        "file": "apps/files_trashbin/lib/Storage.php",
+        "lines": [
+            182,
+            204
+        ],
+        "tokens": 94,
+        "sha256": "bc0f933b2d05769f224c4643"
+    },
+    "OCA\\DAV\\Connector\\Sabre\\Directory::moveInto": {
+        "file": "apps/dav/lib/Connector/Sabre/Directory.php",
+        "lines": [
+            398,
+            472
+        ],
+        "tokens": 418,
+        "sha256": "6a0629ff7102d815ba18ba71"
+    },
+    "Sabre\\DAV\\CorePlugin::httpMove": {
+        "file": "3rdparty/sabre/dav/lib/DAV/CorePlugin.php",
+        "lines": [
+            586,
+            629
+        ],
+        "tokens": 264,
+        "sha256": "f5b5cb145de1e43ee5bbb223"
+    },
+    "OC\\Files\\Node\\HookConnector::postRename": {
+        "file": "lib/private/Files/Node/HookConnector.php",
+        "lines": [
+            163,
+            171
+        ],
+        "tokens": 88,
+        "sha256": "408f5da6a6423055f83aafc0"
+    }
+}

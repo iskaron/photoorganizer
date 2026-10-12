@@ -1,0 +1,33 @@
+[A01] Einfacher Move/Rename auf demselben Storage
+    → PASS
+[A02] Ziel existiert bereits (Datei) mit gleichem Inhalt
+    → FAIL
+[A03] Ziel existiert bereits (Datei) mit anderem Inhalt
+    → FAIL
+[A04] Ziel existiert als Ordner (nicht leer) / Ordner auf Datei
+    → FAIL
+[A05] Quelle = Ziel, Groß-/Kleinschreibung, Unicode-Normalisierung
+    → FAIL
+[A06] Verspäteter zweiter Aufruf mit veraltetem Knoten
+    → FAIL
+[A07] Fehlerfälle: Zielordner fehlt, ungültiger Name, Quelle fehlt
+    → PASS
+[A08] Move eines zuvor geladenen, inzwischen umbenannten Knotens (folgt er der File-ID?)
+    → PASS
+[A09] Ziel entsteht zwischen Existenzprüfung und Move (Kindprozess legt das Ziel an)
+    → FAIL
+[A10] Node::newFile auf vorhandenem Pfad (Neuanlage-API als mögliche Reservierung)
+    → FAIL
+[A11] WebDAV MOVE mit Overwrite: F auf vorhandenes Ziel (Vergleichspunkt)
+    → PASS
+[A12] Während eines (künstlich angehaltenen) Moves: kann ein Konkurrent das Ziel anlegen?
+    → PASS
+[A13] WebDAV MOVE Overwrite: F – Ziel entsteht NACH dem Overwrite-Check (Sabre beforeMove angehalten)
+    → FAIL
+[A14] Prototyp „geschützter Move“ (Storage-Wrapper, interne API) mit Dateisperren
+    → PASS
+[A15] Prototyp „geschützter Move“ (Storage-Wrapper, interne API) ohne Dateisperren
+    → FAIL
+[A20] Konkurrenz am Ziel: node_move gegen node_newfile
+    → FAIL
+[A21] Konkurrenz am Ziel: node_move gegen dav_put

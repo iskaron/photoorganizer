@@ -1,0 +1,327 @@
+{
+  "results": [
+    {
+      "case_id": "F10",
+      "spike": "SP-H",
+      "title": "HashContext-Zustand zwischen PHP-Versionen und Laufzeitumgebungen übertragen",
+      "hypothesis": "Ein unter einer PHP-Version serialisierter SHA-256-Kontext lässt sich unter allen getesteten anderen PHP-Versionen korrekt fortsetzen (nur diese Stichprobe; keine Portabilitätsgarantie).",
+      "doc_ref": "job-processing.md §3.6, SP-H",
+      "result": "PASS",
+      "evidence": "finite_sample",
+      "attempts": 147,
+      "tally": {
+        "resume_ok": 147,
+        "resume_total": 147,
+        "problems": 0
+      },
+      "environment": {
+        "php_versions": {
+          "php82": "8.2.34",
+          "php8314": "8.3.14",
+          "php83": "8.3.35",
+          "php84": "8.4.26",
+          "php85": "8.5.11",
+          "nc34": "8.5.11",
+          "nc35": "8.5.10"
+        },
+        "kinds": {
+          "php82": "php-cli-alpine",
+          "php8314": "php-cli-alpine",
+          "php83": "php-cli-alpine",
+          "php84": "php-cli-alpine",
+          "php85": "php-cli-alpine",
+          "nc34": "nextcloud-app-container",
+          "nc35": "nextcloud-app-container"
+        },
+        "images": {
+          "php82": "php@sha256:0814a91662f32e59ba3092a443ebb4b9915f3320b1b4688650dfc38939c6ff59",
+          "php8314": "php@sha256:4f8df80e2508a184f5e27cd524bc524f3ace9f8a16e4e39280069df391d14551",
+          "php83": "php@sha256:8dbeb51c352cf1f70d5d50f3642c9fbed311e914475ea2382f5bc1525bef7bb3",
+          "php84": "php@sha256:37c8c64177612b72e7f9d2c00481739c166a3708bea27c1cfd27fea1291d82d1",
+          "php85": "php@sha256:93684051146ec037620855feb77f278090bde45ddc030801cd3f2a7685bc4deb"
+        }
+      },
+      "expected": {
+        "all_pairs": "ok"
+      },
+      "observed": {
+        "matrix": {
+          "php82": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "php8314": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "php83": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "php84": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "php85": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "nc34": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          },
+          "nc35": {
+            "php82": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php8314": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php83": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php84": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "php85": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc34": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            },
+            "nc35": {
+              "F10-A": "ok",
+              "F10-B": "ok",
+              "F10-C": "ok"
+            }
+          }
+        }
+      },
+      "assertions": [
+        {
+          "ok": true,
+          "desc": "alle Paare (Erzeuger→Verbraucher) ok",
+          "detail": []
+        }
+      ],
+      "notes": [
+        "Endliche Stichprobe: wenige Versionen, ein Algorithmus (SHA-256), drei Offsets.",
+        "Kein Beleg für künftige PHP-Versionen; Umschlag mit PHP-Version, Neuberechnung bei Abweichung bleibt Pflicht."
+      ],
+      "extra": {
+        "errors": []
+      },
+      "run_id": "20261009T154003Z"
+    }
+  ]
+}

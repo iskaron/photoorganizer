@@ -1,0 +1,120 @@
+[A01] Einfacher Move/Rename auf demselben Storage
+    → PASS
+[A02] Ziel existiert bereits (Datei) mit gleichem Inhalt
+    → FAIL
+[A03] Ziel existiert bereits (Datei) mit anderem Inhalt
+    → FAIL
+[A04] Ziel existiert als Ordner (nicht leer) / Ordner auf Datei
+    → FAIL
+[A05] Quelle = Ziel, Groß-/Kleinschreibung, Unicode-Normalisierung
+    → FAIL
+[A06] Verspäteter zweiter Aufruf mit veraltetem Knoten
+    → FAIL
+[A07] Fehlerfälle: Zielordner fehlt, ungültiger Name, Quelle fehlt
+    → PASS
+[A08] Move eines zuvor geladenen, inzwischen umbenannten Knotens (folgt er der File-ID?)
+    → PASS
+[A09] Ziel entsteht zwischen Existenzprüfung und Move (Kindprozess legt das Ziel an)
+    → FAIL
+[A10] Node::newFile auf vorhandenem Pfad (Neuanlage-API als mögliche Reservierung)
+    → FAIL
+[A11] WebDAV MOVE mit Overwrite: F auf vorhandenes Ziel (Vergleichspunkt)
+    → PASS
+[A12] Während eines (künstlich angehaltenen) Moves: kann ein Konkurrent das Ziel anlegen?
+    → PASS
+[A13] WebDAV MOVE Overwrite: F – Ziel entsteht NACH dem Overwrite-Check (Sabre beforeMove angehalten)
+    → FAIL
+[A14] Prototyp „geschützter Move“ (Storage-Wrapper, interne API) mit Dateisperren
+    → PASS
+[A15] Prototyp „geschützter Move“ (Storage-Wrapper, interne API) ohne Dateisperren
+    → FAIL
+[A16] Fehler und Ausnahmen während des Moves: Listener bricht vor bzw. scheitert nach dem Rename
+    → FAIL
+[A30] Konkurrenz an der Quelle: App-Move gegen Client-Umbenennung derselben Datei
+    → PASS
+[A20] Konkurrenz am Ziel: node_move gegen node_newfile
+    → FAIL
+[A21] Konkurrenz am Ziel: node_move gegen dav_put
+    → INCONCLUSIVE
+[A22] Konkurrenz am Ziel: node_move gegen node_move
+    → FAIL
+[A23] Konkurrenz am Ziel: dav_move_F gegen node_newfile
+    → INCONCLUSIVE
+[A24] Konkurrenz am Ziel: dav_move_F gegen dav_put
+    → INCONCLUSIVE
+[A25] Konkurrenz am Ziel: dav_move_F gegen dav_put_inm
+    → INCONCLUSIVE
+[A26] Konkurrenz am Ziel: dav_move_F gegen dav_move_F
+    → INCONCLUSIVE
+[A27] Konkurrenz am Ziel: node_move_guarded gegen node_newfile
+    → PASS
+[A28] Konkurrenz am Ziel: node_move_guarded gegen dav_put
+    → INCONCLUSIVE
+[A29] Konkurrenz am Ziel: node_move_guarded gegen node_move_guarded
+    → PASS
+[B01] Rename im selben Ordner: File-ID und Storage-Referenz
+    → PASS
+[B02] Move in anderen Ordner (inkl. Ordner-Move mit Kindern)
+    → PASS
+[B03] Move durch WebDAV-Client (Umbenennen, Verschieben)
+    → PASS
+[B04] Copy (Node::copy und WebDAV COPY)
+    → PASS
+[B05] Trash und Restore: File-ID, Pfad, Storage-Referenzen
+    → PASS
+[B06] Inhaltsänderung (gleiche Größe): File-ID, ETag, MTime
+    → FAIL
+[B07] Move über Storage-Grenzen (Heim-Storage → Freigabe-Storage eines anderen Benutzers)
+    → FAIL
+[C01] Node::lock – Verträglichkeitsmatrix shared/exclusive zwischen zwei Prozessen
+    → PASS
+[C02] Konkurrenz durch WebDAV-Client und Node-API gegen eine gesperrte Quelldatei
+    → PASS
+[C03] Sperre auf Zielordner: wirkt sie auf Anlage/Move von Kindern?
+    → PASS
+[C04] Nicht existierender Zielpfad: Sperrbarkeit über ILockingProvider (lock_target)
+    → PASS
+[C05] Wiedereintritt: eigene Sperre auf der Quelle und anschließender Node::move
+    → FAIL
+[C06] Zwei Worker erwerben gleichzeitig dieselbe exklusive Sperre (kooperativer Mutex)
+    → PASS
+[C07] Prozessabbruch (kill -9) mit gehaltener Sperre: bleibt die Sperre bestehen, wie lange?
+    → PASS
+[D01] Node::delete() verwendet den Nextcloud-Papierkorb; Identität, Erreichbarkeit und Inhalt des gelöschten Knotens
+    → PASS
+[D02] Nachweis einer Papierkorboperation (Pre-Delete-Hash beider Exemplare, Post-Beobachtung)
+    → PASS
+[D03] Zwei Löschungen gleichnamiger Dateien innerhalb derselben Sekunde: Namenskollision im Papierkorb
+    → FAIL
+[D04] Restore bei inzwischen vorhandener Zieldatei
+    → PASS
+[D05] Löschen per WebDAV DELETE und Löschen eines Ordners
+    → PASS
+[D06] Fähigkeitserkennung trash_verified (nicht destruktiv)
+    → PASS
+[E01] App-interne Dateioperationen über die Node-API (CLI-Prozess): Create, Write, Rename, Move, Copy, Delete
+    → PASS
+[E02] WebDAV-Operationen eines Clients (Apache-Prozess): PUT neu/überschreiben, MOVE (Rename/Move), COPY, DELETE
+    → PASS
+[E03] Chunked Upload v2 (Nextcloud-/Mobil-/Desktop-Clients): wann und wie oft Ereignisse für die Zieldatei
+    → PASS
+[E04] Papierkorb: Delete und Restore (Node-API und WebDAV-Restore)
+    → PASS
+[E05] Identitätsmerkmale der Ereignisse (Pfad, File-ID, Quelle/Ziel) über alle Szenarien
+    → FAIL
+[E06] Ordner-Move: Ereignisse für den Ordner und für enthaltene Dateien (group_follow-Erkennung)
+    → PASS
+[F01] SHA-256-Kontext: Serialisieren und Fortsetzen an vielen Offsets (reines PHP)
+    → PASS
+[F02] Prozessneustart: Zustand in Datei, Fortsetzung in neuem PHP-Prozess; Datei aus der Nextcloud-Node-API
+    → PASS
+[F03] Manipulierter Zwischenzustand: alle Einzelbitfehler im serialisierten Kontext
+    → PASS
+[F04] Ungültiger Offset beim Fortsetzen
+    → PASS
+[F05] Dateiänderung während der Unterbrechung: Erkennung über Signatur (Größe, MTime, ETag)
+    → FAIL
+[F06] Deserialisierung nur mit allowed_classes und Algorithmus-Fremdobjekte
+    → PASS
+[F07] Durchsatz SHA-256 über die Node-API (Messung, Referenz für Pre-/Post-Hash-Kosten)
+    → PASS

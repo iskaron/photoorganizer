@@ -1,0 +1,9 @@
+.state/
+results/*/raw/
+*.tmp
+# Rohlogs der Läufe: groß (~20 MB), reproduzierbar, nicht in der Doku referenziert
+results/*/runs/*/events.jsonl.gz
+results/*/runs/*/nextcloud-log-tail.jsonl.gz
+results/*/runs/*/app-container.log.gz
+# lokale Zeiger auf den letzten Lauf
+results/*/latest

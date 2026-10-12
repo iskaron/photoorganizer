@@ -1,0 +1,1264 @@
+{
+  "generated_from": {
+    "34": "20261009T143510Z, 20261009T153748Z, 20261009T163948Z, 20261009T164052Z, 20261009T164822Z",
+    "35": "20261009T143510Z, 20261009T153748Z, 20261009T163956Z, 20261009T164058Z, 20261009T164442Z"
+  },
+  "counts": {
+    "34": {
+      "PASS": 42,
+      "FAIL": 18,
+      "INCONCLUSIVE": 0
+    },
+    "35": {
+      "PASS": 42,
+      "FAIL": 18,
+      "INCONCLUSIVE": 0
+    }
+  },
+  "cases": {
+    "A01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A02": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A03": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A04": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A05": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A06": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A07": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A08": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A09": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A10": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A11": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A12": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A13": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A14": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A15": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A16": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "A30": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "app_ok/client_fail/at:app-target.bin": 119,
+          "app_fail/client_fail/at:src.bin": 5,
+          "app_fail/client_ok/at:client-renamed.bin": 26
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "app_ok/client_fail/at:app-target.bin": 116,
+          "app_fail/client_ok/at:client-renamed.bin": 27,
+          "app_fail/client_fail/at:src.bin": 7
+        }
+      }
+    },
+    "A20": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 57,
+          "both_failed": 57,
+          "M_fail/S_ok/final_S": 20,
+          "M_ok/S_fail/final_M": 15,
+          "M_ok/S_ok/final_S": 31,
+          "second_writer_replaced_move_result": 31,
+          "content_of_successful_mover_not_present_anywhere": 31,
+          "M_ok/S_ok/final_M": 27,
+          "VIOLATION_move_replaced_successful_write": 27
+        }
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 55,
+          "both_failed": 55,
+          "M_fail/S_ok/final_S": 19,
+          "M_ok/S_fail/final_M": 14,
+          "M_ok/S_ok/final_S": 33,
+          "second_writer_replaced_move_result": 33,
+          "content_of_successful_mover_not_present_anywhere": 33,
+          "M_ok/S_ok/final_M": 29,
+          "VIOLATION_move_replaced_successful_write": 29
+        }
+      }
+    },
+    "A21": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_ok/S_ok/final_S": 48,
+          "second_writer_replaced_move_result": 48,
+          "content_of_successful_mover_not_present_anywhere": 48,
+          "M_fail/S_ok/final_S": 15,
+          "M_ok/S_fail/final_M": 66,
+          "M_ok/S_ok/final_M": 17,
+          "VIOLATION_move_replaced_successful_write": 17,
+          "M_fail/S_fail/final_S": 4,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 4,
+          "both_failed": 4
+        }
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_ok/S_ok/final_S": 53,
+          "second_writer_replaced_move_result": 53,
+          "content_of_successful_mover_not_present_anywhere": 53,
+          "M_fail/S_ok/final_S": 21,
+          "M_ok/S_fail/final_M": 61,
+          "M_ok/S_ok/final_M": 13,
+          "VIOLATION_move_replaced_successful_write": 13,
+          "M_fail/S_fail/final_S": 1,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 1,
+          "both_failed": 2,
+          "M_fail/S_fail/no_target": 1
+        }
+      }
+    },
+    "A22": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 54,
+          "both_failed": 54,
+          "M_fail/S_ok/final_S": 20,
+          "M_ok/S_fail/final_M": 19,
+          "M_ok/S_ok/final_S": 30,
+          "second_writer_replaced_move_result": 30,
+          "content_of_successful_mover_not_present_anywhere": 30,
+          "M_ok/S_ok/final_M": 27,
+          "VIOLATION_move_replaced_successful_write": 27
+        }
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 54,
+          "both_failed": 54,
+          "M_fail/S_ok/final_S": 18,
+          "M_ok/S_fail/final_M": 18,
+          "M_ok/S_ok/final_M": 29,
+          "VIOLATION_move_replaced_successful_write": 29,
+          "M_ok/S_ok/final_S": 31,
+          "second_writer_replaced_move_result": 31,
+          "content_of_successful_mover_not_present_anywhere": 31
+        }
+      }
+    },
+    "A23": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_ok/final_S": 113,
+          "M_ok/S_ok/final_S": 30,
+          "second_writer_replaced_move_result": 30,
+          "content_of_successful_mover_not_present_anywhere": 30,
+          "M_ok/S_fail/final_M": 6,
+          "M_fail/S_fail/no_target": 1,
+          "both_failed": 1
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_ok/final_S": 111,
+          "M_ok/S_fail/final_M": 10,
+          "M_ok/S_ok/final_S": 27,
+          "second_writer_replaced_move_result": 27,
+          "content_of_successful_mover_not_present_anywhere": 27,
+          "M_fail/S_fail/no_target": 2,
+          "both_failed": 2
+        }
+      }
+    },
+    "A24": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/final_S": 50,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 50,
+          "both_failed": 50,
+          "M_ok/S_ok/final_S": 39,
+          "second_writer_replaced_move_result": 39,
+          "content_of_successful_mover_not_present_anywhere": 39,
+          "M_fail/S_ok/final_S": 53,
+          "M_ok/S_fail/final_M": 8
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/final_S": 50,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 50,
+          "both_failed": 50,
+          "M_fail/S_ok/final_S": 52,
+          "M_ok/S_fail/final_M": 12,
+          "M_ok/S_ok/final_S": 36,
+          "second_writer_replaced_move_result": 36,
+          "content_of_successful_mover_not_present_anywhere": 36
+        }
+      }
+    },
+    "A25": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/final_S": 48,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 48,
+          "both_failed": 48,
+          "M_fail/S_ok/final_S": 55,
+          "M_ok/S_fail/final_M": 47
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/final_S": 48,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 48,
+          "both_failed": 48,
+          "M_fail/S_ok/final_S": 54,
+          "M_ok/S_fail/final_M": 47,
+          "M_ok/S_ok/final_S": 1,
+          "second_writer_replaced_move_result": 1,
+          "content_of_successful_mover_not_present_anywhere": 1
+        }
+      }
+    },
+    "A26": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 53,
+          "both_failed": 53,
+          "M_fail/S_ok/final_S": 48,
+          "M_ok/S_fail/final_M": 49
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 55,
+          "both_failed": 55,
+          "M_fail/S_ok/final_S": 46,
+          "M_ok/S_fail/final_M": 49
+        }
+      }
+    },
+    "A27": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 49,
+          "both_failed": 49,
+          "M_fail/S_ok/final_S": 51,
+          "M_ok/S_ok/final_S": 41,
+          "second_writer_replaced_move_result": 41,
+          "content_of_successful_mover_not_present_anywhere": 41,
+          "M_ok/S_fail/final_M": 9
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 49,
+          "both_failed": 49,
+          "M_fail/S_ok/final_S": 52,
+          "M_ok/S_ok/final_S": 40,
+          "second_writer_replaced_move_result": 40,
+          "content_of_successful_mover_not_present_anywhere": 40,
+          "M_ok/S_fail/final_M": 9
+        }
+      }
+    },
+    "A28": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_ok/S_ok/final_S": 65,
+          "second_writer_replaced_move_result": 65,
+          "content_of_successful_mover_not_present_anywhere": 65,
+          "M_fail/S_ok/final_S": 36,
+          "M_ok/S_fail/final_M": 48,
+          "M_fail/S_fail/final_S": 1,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 1,
+          "both_failed": 1
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_ok/S_fail/final_M": 47,
+          "M_fail/S_ok/final_S": 36,
+          "M_ok/S_ok/final_S": 64,
+          "second_writer_replaced_move_result": 64,
+          "content_of_successful_mover_not_present_anywhere": 64,
+          "M_fail/S_fail/final_S": 3,
+          "FAIL_REPORTED_BUT_SECOND_EFFECT_PRESENT": 3,
+          "both_failed": 3
+        }
+      }
+    },
+    "A29": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 54,
+          "both_failed": 54,
+          "M_fail/S_ok/final_S": 47,
+          "M_ok/S_fail/final_M": 49
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 150,
+        "tally": {
+          "M_fail/S_fail/no_target": 55,
+          "both_failed": 55,
+          "M_fail/S_ok/final_S": 47,
+          "M_ok/S_fail/final_M": 48
+        }
+      }
+    },
+    "B01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B02": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B03": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B04": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B05": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B06": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "B07": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C02": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C03": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C04": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C05": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "C06": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 37,
+        "tally": {
+          "a_lost/b_won": 22,
+          "a_won/b_lost": 15
+        }
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 37,
+        "tally": {
+          "a_won/b_lost": 20,
+          "a_lost/b_won": 17
+        }
+      }
+    },
+    "C07": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D02": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D03": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D04": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D05": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "D06": {
+      "34": {
+        "result": "PASS",
+        "evidence": "static_analysis",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "static_analysis",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E02": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E03": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E04": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E05": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "E06": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F01": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F02": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F03": {
+      "34": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "finite_sample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F04": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F05": {
+      "34": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "FAIL",
+        "evidence": "counterexample",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F06": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    },
+    "F07": {
+      "34": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      },
+      "35": {
+        "result": "PASS",
+        "evidence": "single_observation",
+        "attempts": 1,
+        "tally": []
+      }
+    }
+  },
+  "capabilities_proposal": {
+    "34": [
+      {
+        "capability": "move_no_overwrite[Node::move]",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A02": "FAIL",
+          "A03": "FAIL",
+          "A04": "FAIL",
+          "A05": "FAIL",
+          "A09": "FAIL",
+          "A20": "FAIL",
+          "A21": "FAIL",
+          "A22": "FAIL"
+        }
+      },
+      {
+        "capability": "move_no_overwrite[WebDAV MOVE Overwrite:F]",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A11": "PASS",
+          "A13": "FAIL",
+          "A23": "PASS",
+          "A24": "PASS",
+          "A25": "PASS",
+          "A26": "PASS"
+        }
+      },
+      {
+        "capability": "move_no_overwrite[geschützter Move, interne API]",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "A14": "PASS",
+          "A27": "PASS",
+          "A28": "PASS",
+          "A29": "PASS"
+        }
+      },
+      {
+        "capability": "  Gegenprobe: geschützter Move ohne Dateisperren",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A15": "FAIL"
+        }
+      },
+      {
+        "capability": "move_source_by_path",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A06": "FAIL",
+          "A08": "PASS",
+          "A30": "PASS"
+        }
+      },
+      {
+        "capability": "lock_target (öffentliche API)",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "C04": "PASS",
+          "C05": "FAIL"
+        }
+      },
+      {
+        "capability": "trash_verified",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "D01": "PASS",
+          "D02": "PASS",
+          "D05": "PASS",
+          "D06": "PASS",
+          "B05": "PASS"
+        }
+      },
+      {
+        "capability": "trash_entry_unique_per_second",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "D03": "FAIL"
+        }
+      },
+      {
+        "capability": "trash_restore_no_overwrite",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "D04": "PASS"
+        }
+      },
+      {
+        "capability": "hash_resume (SHA-256)",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "F01": "PASS",
+          "F02": "PASS",
+          "F03": "PASS",
+          "F04": "PASS",
+          "F06": "PASS",
+          "F10": "PASS"
+        }
+      },
+      {
+        "capability": "signature_change_detection",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "B06": "FAIL",
+          "F05": "FAIL"
+        }
+      }
+    ],
+    "35": [
+      {
+        "capability": "move_no_overwrite[Node::move]",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A02": "FAIL",
+          "A03": "FAIL",
+          "A04": "FAIL",
+          "A05": "FAIL",
+          "A09": "FAIL",
+          "A20": "FAIL",
+          "A21": "FAIL",
+          "A22": "FAIL"
+        }
+      },
+      {
+        "capability": "move_no_overwrite[WebDAV MOVE Overwrite:F]",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A11": "PASS",
+          "A13": "FAIL",
+          "A23": "PASS",
+          "A24": "PASS",
+          "A25": "PASS",
+          "A26": "PASS"
+        }
+      },
+      {
+        "capability": "move_no_overwrite[geschützter Move, interne API]",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "A14": "PASS",
+          "A27": "PASS",
+          "A28": "PASS",
+          "A29": "PASS"
+        }
+      },
+      {
+        "capability": "  Gegenprobe: geschützter Move ohne Dateisperren",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A15": "FAIL"
+        }
+      },
+      {
+        "capability": "move_source_by_path",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "A06": "FAIL",
+          "A08": "PASS",
+          "A30": "PASS"
+        }
+      },
+      {
+        "capability": "lock_target (öffentliche API)",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "C04": "PASS",
+          "C05": "FAIL"
+        }
+      },
+      {
+        "capability": "trash_verified",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "D01": "PASS",
+          "D02": "PASS",
+          "D05": "PASS",
+          "D06": "PASS",
+          "B05": "PASS"
+        }
+      },
+      {
+        "capability": "trash_entry_unique_per_second",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "D03": "FAIL"
+        }
+      },
+      {
+        "capability": "trash_restore_no_overwrite",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "D04": "PASS"
+        }
+      },
+      {
+        "capability": "hash_resume (SHA-256)",
+        "verdict": "Kandidat (alle Fälle PASS)",
+        "cases": {
+          "F01": "PASS",
+          "F02": "PASS",
+          "F03": "PASS",
+          "F04": "PASS",
+          "F06": "PASS",
+          "F10": "PASS"
+        }
+      },
+      {
+        "capability": "signature_change_detection",
+        "verdict": "false (widerlegt)",
+        "cases": {
+          "B06": "FAIL",
+          "F05": "FAIL"
+        }
+      }
+    ]
+  },
+  "hashctx_matrix": {
+    "result": "PASS",
+    "resume_ok": {
+      "resume_ok": 147,
+      "resume_total": 147,
+      "problems": 0
+    }
+  }
+}

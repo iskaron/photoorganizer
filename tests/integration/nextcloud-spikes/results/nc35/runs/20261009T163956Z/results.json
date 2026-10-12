@@ -1,0 +1,228 @@
+{
+    "run_id": "20261009T163956Z",
+    "environment": {
+        "nextcloud": {
+            "version": "35.0.0",
+            "build": [
+                35,
+                0,
+                0,
+                10
+            ],
+            "channel": "stable",
+            "major": 35
+        },
+        "php": {
+            "version": "8.5.10",
+            "sapi": "cli",
+            "extensions_relevant": [
+                "hash",
+                "redis",
+                "apcu",
+                "pcntl",
+                "posix",
+                "curl",
+                "imagick",
+                "exif"
+            ],
+            "memory_limit": "1G"
+        },
+        "database": {
+            "provider": "mysql",
+            "server_version": "11.4.13-MariaDB-ubu2404-log"
+        },
+        "storage_class_home": "OC\\Files\\Storage\\Home",
+        "storage_wrapper_chain_home": [
+            "OCA\\Files_Trashbin\\Storage",
+            "OCA\\FilesLock\\Storage\\LockWrapper",
+            "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+            "OC\\Files\\Storage\\Wrapper\\Quota",
+            "OC\\Files\\Storage\\Home"
+        ],
+        "mount_point_class_home": "OC\\Files\\Mount\\HomeMountPoint",
+        "storage_id_class": "home::<hidden>",
+        "datadir_filesystem": "ext2/ext3",
+        "locking": {
+            "filelocking_enabled": true,
+            "provider_class": "OC\\Lock\\MemcacheLockingProvider",
+            "memcache_locking": "\\OC\\Memcache\\Redis",
+            "filelocking_ttl": null
+        },
+        "trashbin_enabled": true,
+        "versions_enabled": true,
+        "encryption_enabled": false,
+        "trashbin_retention_obligation": "auto (Default)",
+        "probe_app_version": "0.0.1"
+    },
+    "results": [
+        {
+            "case_id": "E03",
+            "spike": "Events",
+            "title": "Chunked Upload v2 (Nextcloud-/Mobil-/Desktop-Clients): wann und wie oft Ereignisse für die Zieldatei",
+            "hypothesis": "Beim Chunked Upload entsteht die Zieldatei erst beim abschließenden MOVE; Zwischenstände (Chunks) lösen keine Ereignisse für den Zielpfad aus, und die Zieldatei ist bei den Ereignissen vollständig.",
+            "doc_ref": "job-processing.md §4 (Events), OQ-056, SP-E/Events-Spike, nextcloud-integration.md §2.3",
+            "result": "PASS",
+            "evidence": "single_observation",
+            "attempts": 1,
+            "tally": [],
+            "environment": {
+                "nextcloud_version": "35.0.0",
+                "php_version": "8.5.10",
+                "storage_class": "OC\\Files\\Storage\\Home",
+                "storage_wrapper_chain": [
+                    "OCA\\Files_Trashbin\\Storage",
+                    "OCA\\FilesLock\\Storage\\LockWrapper",
+                    "OCA\\PoSpikeProbe\\Support\\RenameHookWrapper",
+                    "OC\\Files\\Storage\\Wrapper\\Quota",
+                    "OC\\Files\\Storage\\Home"
+                ],
+                "database": "mysql 11.4.13-MariaDB-ubu2404-log",
+                "locking_provider": "OC\\Lock\\MemcacheLockingProvider",
+                "filelocking_enabled": true
+            },
+            "expected": {
+                "chunked_upload_v2": {
+                    "NodeCreatedEvent": "1..n"
+                }
+            },
+            "observed": {
+                "sequence:chunked_upload_v2": [
+                    "+1460.3ms BeforeNodeCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+1464ms BeforeNodeWrittenEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+1578.4ms VersionCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000",
+                    "+1578.5ms NodeCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000",
+                    "+1766.1ms NodeWrittenEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000"
+                ],
+                "counts:chunked_upload_v2": {
+                    "CacheEntryInsertedEvent": 8,
+                    "CacheEntryUpdatedEvent": 17,
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1,
+                    "CacheEntriesRemovedEvent": 1,
+                    "CacheEntryRemovedEvent": 3
+                },
+                "http": [
+                    {
+                        "method": "MKCOL",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 990.9,
+                        "body_head": null
+                    },
+                    {
+                        "method": "PUT",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 184.8,
+                        "body_head": null
+                    },
+                    {
+                        "method": "PUT",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": null,
+                        "oc_fileid": null,
+                        "ms": 143.3,
+                        "body_head": null
+                    },
+                    {
+                        "method": "MOVE",
+                        "status": 201,
+                        "curl_error": null,
+                        "etag": "\"d218121faaba0532dcb5545984aaafe5\"",
+                        "oc_fileid": "00010045ocii2pti8bwt",
+                        "ms": 492.2,
+                        "body_head": null
+                    }
+                ],
+                "events_for_target_only": [
+                    "+1460.3ms BeforeNodeCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+1464ms BeforeNodeWrittenEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#ERR:OCP\\Files\\NotFoundException size=ERR:OCP\\Files\\NotFoundException",
+                    "+1488.8ms CacheEntryInsertedEvent [apache2handler pid=6419 MOVE] path='files/spike/20261009T163956Z/E03/big.bin' storageId=3 fileId=10045",
+                    "+1489.1ms CacheEntryInsertedEvent [apache2handler pid=6419 MOVE] path='files/spike/20261009T163956Z/E03/big.bin' storageId=3 fileId=10045",
+                    "+1529.8ms CacheEntryUpdatedEvent [apache2handler pid=6419 MOVE] path='files/spike/20261009T163956Z/E03/big.bin' storageId=3 fileId=10045",
+                    "+1578.4ms VersionCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000",
+                    "+1578.5ms NodeCreatedEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000",
+                    "+1766.1ms NodeWrittenEvent [apache2handler pid=6419 MOVE] node=/alice/files/spike/20261009T163956Z/E03/big.bin#10045 size=300000"
+                ],
+                "events_for_target_classes": {
+                    "BeforeNodeCreatedEvent": 1,
+                    "BeforeNodeWrittenEvent": 1,
+                    "CacheEntryInsertedEvent": 2,
+                    "CacheEntryUpdatedEvent": 1,
+                    "VersionCreatedEvent": 1,
+                    "NodeCreatedEvent": 1,
+                    "NodeWrittenEvent": 1
+                },
+                "target_events_before_move_completed": null,
+                "events_for_upload_area": [],
+                "sizes_in_after_events": [
+                    null,
+                    null,
+                    null,
+                    300000,
+                    300000,
+                    300000
+                ]
+            },
+            "sha256_before": null,
+            "sha256_after": {
+                "big.bin": "9e509ca73714dfe8a850ea5604ef359a38a8f6d8f4844154c32d3b4d9be2f2fc"
+            },
+            "file_ids_before": null,
+            "file_ids_after": {
+                "big.bin": 10045
+            },
+            "file_count_before": null,
+            "file_count_after": 1,
+            "api": [],
+            "assertions": [
+                {
+                    "ok": true,
+                    "desc": "chunked_upload_v2: NodeCreatedEvent erwartet 1..n, beobachtet 1",
+                    "detail": {
+                        "CacheEntryInsertedEvent": 8,
+                        "CacheEntryUpdatedEvent": 17,
+                        "BeforeNodeCreatedEvent": 1,
+                        "BeforeNodeWrittenEvent": 1,
+                        "VersionCreatedEvent": 1,
+                        "NodeCreatedEvent": 1,
+                        "NodeWrittenEvent": 1,
+                        "CacheEntriesRemovedEvent": 1,
+                        "CacheEntryRemovedEvent": 3
+                    }
+                },
+                {
+                    "ok": true,
+                    "desc": "zusammengesetzte Datei korrekt (Testvoraussetzung)",
+                    "detail": null
+                },
+                {
+                    "ok": true,
+                    "desc": "in allen After-Events für die Zieldatei ist die Datei bereits vollständig (Größe = Gesamtlänge)",
+                    "detail": [
+                        null,
+                        null,
+                        null,
+                        300000,
+                        300000,
+                        300000
+                    ]
+                }
+            ],
+            "notes": [],
+            "extra": [],
+            "logs": [],
+            "harness_error": null,
+            "duration_ms": 3537,
+            "run_id": "20261009T163956Z"
+        }
+    ]
+}

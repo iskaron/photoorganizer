@@ -1,0 +1,252 @@
+#!/usr/bin/env bash
+# ncspike – Bedienung der isolierten Nextcloud-Spike-Umgebung (Photo Organizer, Auftrag 5).
+# Ausschließlich Ressourcen der Compose-Projekte po-spike-nc34 / po-spike-nc35 werden verändert.
+# Kein `docker system prune`, kein globales Cleanup, kein Docker-Socket in Containern.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$HERE"
+
+usage() {
+  cat <<'USAGE'
+Aufruf: ./ncspike [--nc 34|35] <Befehl> [Argumente]
+
+Befehle
+  preflight            Docker/Compose/Platz prüfen, nichts verändern
+  up                   Stack (db, redis, app) für die gewählte Version starten
+  bootstrap            Installation abwarten, konfigurieren, Benutzer alice/bob anlegen,
+                       Probe-App aktivieren, Cron-Service starten, Umgebungsdaten festhalten
+  test [opts]          Spikes ausführen. Optionen:
+                         --group A,B,C,D,E,F   (Standard: alle)
+                         --case A03            (einzelner Testfall)
+                         --repeat N            (Wiederholungen der Race-Tests; Standard 150)
+  hashctx              HashContext-Portabilitätsmatrix über PHP-Versionen (Spike F10) ausführen
+                       (benötigt die PHP-Images aus versions/php-matrix.env; nutzt laufende NC-Projekte als weitere Umgebungen)
+  report               Ergebnisberichte (JSON → Markdown) aus results/ erzeugen
+  status               Zustand des Projekts anzeigen
+  logs [service]       Containerlogs
+  occ <args>           occ als www-data im app-Container
+  shell                Shell im app-Container
+  reset-data           Testdaten (Ordner /spike der Testbenutzer, Papierkorb, Sperren, Eventlog)
+                       über Nextcloud-APIs löschen; Installation bleibt
+  down                 Container + Netzwerk des Projekts entfernen; Volumes bleiben
+  reset                Wie down, zusätzlich Volumes und lokalen Zustand des Projekts löschen
+  all                  up + bootstrap + test + report
+
+Die Version wird mit --nc 34|35 oder der Umgebungsvariablen NC_VERSION gewählt (Standard 34).
+Für test/report/all kann --nc both angegeben werden (nacheinander, getrennte Projekte).
+USAGE
+}
+
+NC="${NC_VERSION:-34}"
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --nc) NC="$2"; shift 2;;
+    -h|--help) if [[ ${#ARGS[@]} -eq 0 ]]; then usage; exit 0; else ARGS+=("$1"); shift; fi;;
+    *) ARGS+=("$1"); shift;;
+  esac
+done
+set -- "${ARGS[@]:-}"
+CMD="${1:-}"; shift || true
+
+die() { echo "FEHLER: $*" >&2; exit 1; }
+log() { echo "[ncspike] $*"; }
+
+run_for_versions() {  # $1 = Befehlsfunktion
+  local fn="$1"; shift
+  if [[ "$NC" == "both" ]]; then
+    for v in 34 35; do NC="$v" load_version; "$fn" "$@"; done
+  else
+    load_version; "$fn" "$@"
+  fi
+}
+
+load_version() {
+  [[ "$NC" =~ ^(34|35)$ ]] || die "--nc muss 34, 35 oder both sein (war: $NC)"
+  ENVFILE="$HERE/versions/nc${NC}.env"
+  [[ -f "$ENVFILE" ]] || die "$ENVFILE fehlt"
+  set -a; . "$ENVFILE"; set +a
+  [[ "$PO_SPIKE_PROJECT" == "po-spike-nc${NC}" ]] || die "Projektname unerwartet: $PO_SPIKE_PROJECT"
+  STATE="$HERE/.state/$PO_SPIKE_PROJECT"
+  SECRETS="$STATE/secrets.env"
+  RESULTS="$HERE/results/nc${NC}"
+  DC=(docker compose -p "$PO_SPIKE_PROJECT" -f "$HERE/compose.yaml" --env-file "$ENVFILE" --env-file "$SECRETS" --profile cron)
+}
+
+ensure_secrets() {
+  mkdir -p "$STATE"; chmod 700 "$STATE"
+  if [[ ! -f "$SECRETS" ]]; then
+    local r; r() { head -c 18 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 20; }
+    umask 077
+    cat >"$SECRETS" <<EOF
+DB_ROOT_PASS=$(r)
+DB_PASS=$(r)
+REDIS_PASS=$(r)
+ADMIN_PASS=$(r)
+ALICE_PASS=$(r)
+BOB_PASS=$(r)
+EOF
+    log "synthetische Testzugangsdaten erzeugt: $SECRETS (nur lokal, nur für dieses Projekt)"
+  fi
+}
+
+occ()  { "${DC[@]}" exec -T -u www-data app php occ "$@"; }
+appx() { "${DC[@]}" exec -T -u www-data app "$@"; }
+
+cmd_preflight() {
+  command -v docker >/dev/null || die "docker nicht gefunden (Blocker; keine Hoständerung vorgenommen)"
+  docker compose version >/dev/null 2>&1 || die "docker compose nicht verfügbar"
+  docker info >/dev/null 2>&1 || die "Docker-Daemon nicht erreichbar"
+  local free; free=$(df -P / | awk 'NR==2{print int($4/1024/1024)}')
+  log "Docker $(docker --version | awk '{print $3}') · Compose $(docker compose version --short) · freier Platz auf / ≈ ${free} GiB"
+  (( free >= 8 )) || die "weniger als 8 GiB frei – Abbruch (nichts verändert)"
+  log "Preflight OK (Version ${NC}, Projekt ${PO_SPIKE_PROJECT})"
+}
+
+cmd_up() {
+  cmd_preflight; ensure_secrets
+  "${DC[@]}" up -d db redis app
+  log "warte auf Healthcheck der App (erste Installation dauert ca. 1–3 Minuten)…"
+  local i; for i in $(seq 1 120); do
+    local h; h=$(docker inspect -f '{{.State.Health.Status}}' "$("${DC[@]}" ps -q app)" 2>/dev/null || echo none)
+    [[ "$h" == "healthy" ]] && { log "app healthy"; return 0; }
+    sleep 5
+  done
+  die "app wurde nicht healthy (siehe: ./ncspike --nc $NC logs app)"
+}
+
+cmd_bootstrap() {
+  ensure_secrets
+  local st; st=$(occ status --output=json 2>/dev/null || true)
+  echo "$st" | grep -q '"installed":true' || die "Nextcloud nicht installiert – zuerst: ./ncspike --nc $NC up"
+  # shellcheck disable=SC1090
+  . "$SECRETS"
+  log "Konfiguration setzen"
+  occ config:system:set appstoreenabled --value=false --type=boolean >/dev/null
+  occ config:system:set check_for_working_wellknown_setup --value=false --type=boolean >/dev/null
+  occ config:system:set auth.bruteforce.protection.enabled --value=false --type=boolean >/dev/null
+  occ config:system:set loglevel --value=0 --type=integer >/dev/null
+  occ config:system:set skeletondirectory --value='' >/dev/null
+  occ config:system:set filelocking.enabled --value=true --type=boolean >/dev/null
+  occ config:system:set updatechecker --value=false --type=boolean >/dev/null
+  occ config:system:set maintenance_window_start --value=1 --type=integer >/dev/null
+  occ config:system:set overwrite.cli.url --value='http://localhost/' >/dev/null
+  occ background:cron >/dev/null
+  occ app:enable files_trashbin >/dev/null 2>&1 || true
+  occ app:enable files_versions >/dev/null 2>&1 || true
+  log "Testbenutzer alice und bob (normale Benutzer, synthetische Passwörter)"
+  for u in alice bob; do
+    if ! occ user:info "$u" >/dev/null 2>&1; then
+      local pw; pw=$([[ $u == alice ]] && echo "$ALICE_PASS" || echo "$BOB_PASS")
+      "${DC[@]}" exec -T -u www-data -e OC_PASS="$pw" app php occ user:add --password-from-env --display-name="${u^}" "$u" >/dev/null
+    fi
+  done
+  log "Probe-App aktivieren (wegwerfbar, gehört nicht zur Photo-Organizer-App)"
+  occ app:enable po_spike_probe >/dev/null
+  # App-Passwörter für WebDAV (Basic-Auth mit Anmeldepasswort kostet pro Request mehrere 100 ms Hashing)
+  for u in alice bob; do
+    if [[ -z "$(occ config:app:get po_spike_probe "token_$u" 2>/dev/null || true)" ]]; then
+      local tok; tok=$(occ user:auth-tokens:add -n --name=spike "$u" 2>/dev/null | tail -n 1 | tr -d '[:space:]')
+      [[ -n "$tok" ]] || die "App-Passwort für $u konnte nicht erzeugt werden"
+      occ config:app:set po_spike_probe "token_$u" --value="$tok" >/dev/null
+    fi
+  done
+  "${DC[@]}" up -d cron
+  mkdir -p "$RESULTS"
+  occ po-spike:env --format=json >"$RESULTS/environment.json"
+  log "Umgebung festgehalten: $RESULTS/environment.json"
+  python3 -I -c 'import json,sys;d=json.load(open(sys.argv[1]));print(json.dumps({k:d.get(k) for k in ("nextcloud","php","database","storage_class_home","locking","trashbin_enabled")},indent=1))' "$RESULTS/environment.json"
+}
+
+cmd_test() {
+  local group="" case_="" repeat=150
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --group) group="$2"; shift 2;;
+      --case) case_="$2"; shift 2;;
+      --repeat) repeat="$2"; shift 2;;
+      *) die "unbekannte Option $1";;
+    esac
+  done
+  local ts; ts=$(date -u +%Y%m%dT%H%M%SZ)
+  local outdir="$RESULTS/runs/$ts"
+  mkdir -p "$outdir"
+  "${DC[@]}" exec -T -u root app apache2ctl graceful >/dev/null 2>&1 || true
+  occ po-spike:env --format=json >"$outdir/environment.json"
+  local extra=(--repeat="$repeat" --run-id="$ts")
+  [[ -n "$group" ]] && extra+=(--group="$group")
+  [[ -n "$case_" ]] && extra+=(--case="$case_")
+  log "Testlauf $ts (NC $NC, repeat=$repeat)"
+  local since; since=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  "${DC[@]}" exec -T -u www-data app sh -c 'mkdir -p /tmp/po-spike; chmod 1777 /tmp/po-spike; : > /tmp/po-spike/events.jsonl; chmod 666 /tmp/po-spike/events.jsonl' >/dev/null 2>&1 || true
+  set +e
+  occ po-spike:run "${extra[@]}" --format=json >"$outdir/results.json" 2>"$outdir/stderr.log"
+  local rc=$?
+  set -e
+  "${DC[@]}" exec -T -u www-data app sh -c 'tail -n 1500 /var/www/html/data/nextcloud.log 2>/dev/null | cut -c1-3000' >"$outdir/nextcloud-log-tail.jsonl" || true
+  "${DC[@]}" logs --since "$since" --no-color app 2>&1 | tail -n 3000 >"$outdir/app-container.log" || true
+  "${DC[@]}" exec -T -u www-data app sh -c 'cat /tmp/po-spike/events.jsonl 2>/dev/null' >"$outdir/events.jsonl" || true
+  gzip -9 -f "$outdir/nextcloud-log-tail.jsonl" "$outdir/app-container.log" "$outdir/events.jsonl" 2>/dev/null || true
+  echo "$ts" >"$RESULTS/latest"
+  log "occ rc=$rc · Ergebnis: $outdir/results.json"
+  python3 -I "$HERE/harness/report.py" --summary "$outdir/results.json" || true
+}
+
+cmd_hashctx() {
+  local ncs=""
+  for v in 34 35; do
+    if docker compose -p "po-spike-nc$v" -f "$HERE/compose.yaml" --env-file "$HERE/versions/nc$v.env" --env-file "$HERE/.state/po-spike-nc$v/secrets.env" ps --status running -q app 2>/dev/null | grep -q .; then ncs="$ncs,$v"; fi
+  done
+  python3 -I "$HERE/harness/hashctx_matrix.py" --nc "${ncs#,}"
+}
+
+cmd_report() {
+  python3 -I "$HERE/harness/report.py" --results-dir "$HERE/results" --out "$HERE/results/REPORT.md"
+}
+
+cmd_status() {
+  "${DC[@]}" ps -a 2>&1 || true
+  docker volume ls --filter "label=com.docker.compose.project=$PO_SPIKE_PROJECT" --format '{{.Name}}'
+}
+
+cmd_logs() { "${DC[@]}" logs --no-color --tail=200 "$@"; }
+
+cmd_reset_data() {
+  occ po-spike:cleanup
+  "${DC[@]}" exec -T redis sh -c 'redis-cli -a "$REDIS_PASS" --no-auth-warning flushall' >/dev/null
+  "${DC[@]}" exec -T -u www-data app sh -c 'rm -rf /tmp/po-spike; mkdir -p /tmp/po-spike; chmod 1777 /tmp/po-spike'
+  log "Testdaten dieses Projekts zurückgesetzt"
+}
+
+cmd_down() { "${DC[@]}" down --remove-orphans; }
+
+cmd_reset() {
+  [[ "$PO_SPIKE_PROJECT" =~ ^po-spike-nc(34|35)$ ]] || die "Projektname unplausibel – Abbruch"
+  "${DC[@]}" down --volumes --remove-orphans
+  rm -rf "$STATE"
+  log "Projekt $PO_SPIKE_PROJECT vollständig entfernt (Container, Netzwerk, Volumes, lokaler Zustand). results/ bleibt erhalten."
+}
+
+cmd_all() {
+  cmd_up; cmd_bootstrap; cmd_test "$@"; cmd_report
+}
+
+case "$CMD" in
+  preflight) run_for_versions cmd_preflight;;
+  up) run_for_versions cmd_up;;
+  bootstrap) run_for_versions cmd_bootstrap;;
+  test) run_for_versions cmd_test "$@";;
+  hashctx) cmd_hashctx;;
+  report) cmd_report;;
+  status) run_for_versions cmd_status;;
+  logs) load_version; cmd_logs "$@";;
+  occ) load_version; occ "$@";;
+  shell) load_version; "${DC[@]}" exec -u www-data app bash;;
+  reset-data) run_for_versions cmd_reset_data;;
+  down) run_for_versions cmd_down;;
+  reset) run_for_versions cmd_reset;;
+  all) run_for_versions cmd_all "$@";;
+  ""|help) usage;;
+  *) usage; die "unbekannter Befehl: $CMD";;
+esac

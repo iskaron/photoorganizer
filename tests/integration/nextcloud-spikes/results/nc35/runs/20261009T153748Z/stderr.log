@@ -1,0 +1,26 @@
+[A16] Fehler und Ausnahmen während des Moves: Listener bricht vor dem Rename ab / scheitert nach dem Rename
+    → PASS
+[A30] Konkurrenz an der Quelle: App-Move gegen Client-Umbenennung derselben Datei
+    → PASS
+[A20] Konkurrenz am Ziel: node_move gegen node_newfile
+    → FAIL
+[A21] Konkurrenz am Ziel: node_move gegen dav_put
+    → FAIL
+[A22] Konkurrenz am Ziel: node_move gegen node_move
+    → FAIL
+[A23] Konkurrenz am Ziel: dav_move_F gegen node_newfile
+    → PASS
+[A24] Konkurrenz am Ziel: dav_move_F gegen dav_put
+    → PASS
+[A25] Konkurrenz am Ziel: dav_move_F gegen dav_put_inm
+    → PASS
+[A26] Konkurrenz am Ziel: dav_move_F gegen dav_move_F
+    → PASS
+[A27] Konkurrenz am Ziel: node_move_guarded gegen node_newfile
+    → PASS
+[A28] Konkurrenz am Ziel: node_move_guarded gegen dav_put
+    → PASS
+[A29] Konkurrenz am Ziel: node_move_guarded gegen node_move_guarded
+    → PASS
+[D03] Zwei Löschungen gleichnamiger Dateien am selben Pfad kurz nacheinander (gleiche Sekunde) und mit 2 s Abstand
+    → FAIL
