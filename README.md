@@ -50,4 +50,9 @@ Das Projekt befindet sich in der Planung; Entscheidungen trifft der Product Owne
 
 ## Lizenz
 
-Noch nicht festgelegt.
+Copyright (C) 2026 Oliver Meyer
+
+Dieses Projekt steht unter der [GNU Affero General Public License, Version 3 oder (nach Wahl) jeder späteren Version](LICENSE) (`AGPL-3.0-or-later`), der Lizenz von Nextcloud selbst. Sie erlaubt die kommerzielle Nutzung; Urheberrechts- und Lizenzhinweise müssen erhalten bleiben, und Änderungen sind unter derselben Lizenz offenzulegen, auch bei Nutzung als Netzwerkdienst. Die Lizenz gilt für den Code und die Dokumentation in diesem Repository.
+
+> [!NOTE]
+> Der Autor wünscht sich, dass die Software nicht für militärische Zwecke eingesetzt wird. Das ist eine Bitte, keine Lizenzbedingung: Die AGPL erlaubt keine zusätzlichen Einschränkungen des Einsatzgebiets.
